@@ -9,6 +9,7 @@
     height: 100%;
     padding: 0px!important;
     font-size: 16px;
+    z-index: 0;
 }
 
 .bamboo>.slides {
@@ -19,9 +20,6 @@
     z-index: 0;
     overflow: hidden;
     box-sizing: border-box;
-    margin: 0px!important;
-    padding: 0px!important;
-    border: 0px!important;
 }
 
 .bamboo>.dots {
@@ -123,7 +121,7 @@
 }
 
 .bamboo .fade {
-    animation: bamboo-fade 2s;
+    animation: bamboo-fade 0.4s linear;
 }
 
 @keyframes bamboo-fade {
@@ -175,6 +173,9 @@
 
 .bamboo.square>.TEMP {
     position: relative;
+/*     position: absolute;
+    top: 0;
+    left: 0; */
 }
 
 .bamboo.square>.TEMP>div {
@@ -194,11 +195,16 @@
     overflow: hidden;
 }
 
+.bamboo.down>.slides {
+    position: relative;
+    z-index: 0;
+}
+
 .bamboo.down>.slides>* {
     position: absolute;
     top: 0;
     left: 0;
-    transition: 0.4s ease;
+    transition: transform 0.4s linear;
 }
 
 .bamboo.down>.dots {
