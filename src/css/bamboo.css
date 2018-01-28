@@ -9,6 +9,7 @@
 
 .bamboo>.slides {
     position: relative;
+    z-index: 0;
 }
 
 .bamboo>.slides>.slide {
@@ -17,7 +18,7 @@
     box-sizing: border-box;
 }
 
-.bamboo>.dots {
+.bamboo>.bamboo-dots {
     position: absolute;
     z-index: 5;
     bottom: 5%;
@@ -28,7 +29,7 @@
     transform: translateX(-50%);
 }
 
-.bamboo>.dots>* {
+.bamboo>.bamboo-dots>* {
     float: left;
     width: 10px;
     height: 10px;
@@ -39,15 +40,15 @@
     background: rgba(255, 255, 255, 0.8);
 }
 
-.bamboo>.dots>*:hover {
+.bamboo>.bamboo-dots>*:hover {
     background: rgba(255, 0, 0, 0.6);
 }
 
-.bamboo>.dots>*.focus {
+.bamboo>.bamboo-dots>*.focus {
     background: rgba(255, 0, 0, 0.6);
 }
 
-.bamboo>.prev {
+.bamboo>.bamboo-prev {
     position: absolute;
     z-index: 5;
     top: 48%;
@@ -63,7 +64,7 @@
     background-size: 6px;
 }
 
-.bamboo>.next {
+.bamboo>.bamboo-next {
     position: absolute;
     z-index: 5;
     top: 48%;
@@ -80,7 +81,7 @@
 }
 
 .bamboo.roll {
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .bamboo.roll>.slides {
@@ -110,18 +111,74 @@
 }
 
 .bamboo.fade {
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
-.bamboo.fade>.slides>div {
+.bamboo.fade>.slides>* {
     position: absolute;
     top: 0;
     left: 0;
     transition: opacity 0.6s;
 }
 
+
+.bamboo.down {
+    /* overflow: hidden; */
+}
+
+.bamboo.down>.slides {
+    position: relative;
+    z-index: 0;
+}
+
+.bamboo.down>.slides>* {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.4s linear;
+}
+
+.bamboo.down.jsAnime>.slides>* {
+    transition: none;
+}
+
+.bamboo.down>.bamboo-dots {
+    top: 50%;
+    right: 10px;
+    bottom: auto;
+    left: auto;
+    width: 15px;
+    transform: translateY(-50%);
+}
+
+.bamboo.down>.bamboo-dots>* {
+    margin: 5px 0;
+}
+
+.bamboo.down>.bamboo-prev {
+    top: 2px;
+    left: 50%;
+    transform: rotate(-90deg);
+    background-color: rgba(0, 0, 0, 0);
+    background-size: 12px;
+
+    /* filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.1)); */
+}
+
+.bamboo.down>.bamboo-next {
+    top: auto;
+    bottom: 2px;
+    left: 50%;
+    transform: rotate(-90deg);
+    background-color: rgba(0, 0, 0, 0);
+    background-size: 12px;
+
+    /* filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.1)); */
+}
+
+
 .bamboo.blinds {
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .bamboo.blinds>.slides>* {
@@ -136,14 +193,18 @@
 }
 
 .bamboo.blinds>.tempSlide>div {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
     float: left;
     overflow: hidden;
     transition: 0.4s ease-out;
+
 }
 
 .bamboo.blinds.jsAnime>.tempSlide>div {
     transition: none;
+    transform: translate3d(0px, 0px, 0px);
 }
 
 .bamboo.blinds>.tempSlide>div>* {
@@ -153,7 +214,7 @@
 }
 
 .bamboo.square {
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .bamboo.square>.slides>* {
@@ -174,6 +235,7 @@
     float: left;
     overflow: hidden;
     transition: 0.1s ease-out;
+    transform: translate3d(0, 0, 0);
 }
 
 .bamboo.square.jsAnime>.tempSlide>div {
@@ -186,59 +248,6 @@
     left: 0px;
 }
 
-.bamboo.down {
-    overflow: hidden;
-}
-
-.bamboo.down>.slides {
-    position: relative;
-    z-index: 0;
-}
-
-.bamboo.down>.slides>* {
-    position: absolute;
-    top: 0;
-    left: 0;
-    transition: transform 0.4s linear;
-}
-
-.bamboo.down.jsAnime>.slides>* {
-    transition: none;
-}
-
-.bamboo.down>.dots {
-    top: 50%;
-    right: 10px;
-    bottom: auto;
-    left: auto;
-    width: 15px;
-    transform: translateY(-50%);
-}
-
-.bamboo.down>.dots>* {
-    margin: 5px 0;
-}
-
-.bamboo.down>.prev {
-    top: 2px;
-    left: 50%;
-    transform: rotate(-90deg);
-    background-color: rgba(0, 0, 0, 0);
-    background-size: 12px;
-
-    filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.1));
-}
-
-.bamboo.down>.next {
-    top: auto;
-    bottom: 2px;
-    left: 50%;
-    transform: rotate(-90deg);
-    background-color: rgba(0, 0, 0, 0);
-    background-size: 12px;
-
-    filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.1));
-}
 
 .bamboo .fit-img {
     position: relative;
