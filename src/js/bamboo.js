@@ -75,6 +75,8 @@ var bamboo = (function(){
                 showDot: p.showDot !== undefined ? p.showDot : true,
                 showArrow: p.showArrow !== undefined ? p.showArrow : true,
 
+                width: p.width !== undefined ? p.width : slideshowElement.clientWidth,
+                height: p.height !== undefined ? p.height : slideshowElement.clientHeight,
                 backgroundColor: p.backgroundColor,
                 index: p.index !== undefined ? p.index : 0,
                 autoPlay: p.autoPlay !== undefined ? p.autoPlay : true,
@@ -84,12 +86,15 @@ var bamboo = (function(){
                 reverse: p.reverse !== undefined ? p.reverse : false,
                 timeout: p.timeout !== undefined ? p.timeout : 2000,
                 jsAnime: p.jsAnime !== undefined ? p.jsAnime : false,
+                
                 pause: false,
-                // to do 
+                // del
                 toward: p.toward !== undefined ? p.toward : 'horizontal',
             };
 
             slideshow._init = function() {
+                var _this = this;
+                
                 if (!this.slidesElement) {
                     throw "Not slides found";
                 }
@@ -125,8 +130,27 @@ var bamboo = (function(){
                         this.slideshowElement.appendChild(this.next);
                     }
                 }
-                // event
-                var _this = this;
+
+                // slide's width/height
+                for (var i = 0; i < this.slides.length; i++) {
+                    var slide = this.slides[i];
+                    addClass(slide, 'slide');
+                    slide.style.width = this.width + 'px';
+                    slide.style.height = this.height + 'px';
+                }
+                // dot init
+                for (var i = 0; i < this.dots.length; i++) {
+                    var dotEle = _this.dots[i];
+                    dotEle.setAttribute('data-index', i);
+                    dotEle.addEventListener('mouseenter', function(event) {
+                        var index = Number(this.getAttribute('data-index'));
+                        if (index != _this.index) {
+                            _this.setFocus(index, 'dot');
+                        }
+                    });
+                }
+                // mouse event
+                
                 this.slideshowElement.addEventListener('mouseenter', function() {
                     _this.pause = true;
                 });
@@ -139,43 +163,24 @@ var bamboo = (function(){
                 this.next.addEventListener('click', function() {
                     _this.setFocus(_this.index + 1, 'right-key');
                 });
-                // set
-                var width = this.slideshowElement.clientWidth;
-                var height = this.slideshowElement.clientHeight;
-                for (var i = 0; i < this.slides.length; i++) {
-                    var slide = this.slides[i];
-                    addClass(slide, 'slide');
-                    slide.style.width = width + 'px';
-                    slide.style.height = height + 'px';
-                }
-                for (var i = 0; i < this.dots.length; i++) {
-                    var dotEle = _this.dots[i];
-                    dotEle.setAttribute('data-index', i);
-                    dotEle.addEventListener('mouseenter', function(event) {
-                        var index = Number(this.getAttribute('data-index'));
-                        if (index != _this.index) {
-                            _this.setFocus(index, 'dot');
-                        }
-                    });
-                }
+                // image adaptive container width/height
                 if (this.fitImg) {
                     var imgList = this.slidesElement.querySelectorAll('img');
-                    var containerWidth = this.slideshowElement.clientWidth;
-                    var containerHeight = this.slideshowElement.clientHeight;
                     var len = imgList.length;
                     for (var i = 0; i < len; i++) {
                         var imgElement = imgList[i];
                         addClass(imgElement, 'fit-img');
-                        var imgWidth = imgElement.clientWidth;
+
                         var imgHeight = imgElement.clientHeight;
-                        var widthM = containerWidth / imgWidth;
-                        if (imgHeight * widthM > containerHeight) {
+                        var t = this.width / imgElement.clientWidth;
+                        if (imgHeight * t > this.height) {
                             imgElement.style.width = '100%';
                         } else {
                             imgElement.style.height = '100%';
                         }
                     }
                 }
+                // set background-color
                 if (this.backgroundColor) {
                     this.slidesElement.style.backgroundColor = this.backgroundColor;
                     var len = this.slides.length;
@@ -183,6 +188,8 @@ var bamboo = (function(){
                         this.slides[i].style.backgroundColor = this.backgroundColor;
                     }
                 }
+                // If use js to calculate the animation,
+                // delete css property: transition
                 if (this.jsAnime) {
                     addClass(this.slideshowElement, 'jsAnime');
                 }
@@ -272,18 +279,11 @@ var bamboo = (function(){
                 this.slidesElement.style.transitionProperty = transitionProperty || 'all';
             };
             slideshow.focusByCss = function(index, whoTrigger) {
-                var slideWidth;
-                // calculate the moving distance
-                if (this.vertical) {
-                    slideWidth = this.slideshowElement.clientHeight;
-                } else {
-                    slideWidth = this.slideshowElement.clientWidth;
-                }
-
+                var moveDistance = (this.vertical) ? this.height : this.width;
                 var slidesLength = this.slides.length;
                 if (index === -1) {
                     // reset slide to last one
-                    this.resetTo(-(slidesLength - 1) * slideWidth);
+                    this.resetTo(-(slidesLength - 1) * moveDistance);
                     index = (slidesLength - 1) - 1;
                 } else if (index === slidesLength) {
                     // reset slide to 0
@@ -294,52 +294,41 @@ var bamboo = (function(){
                     this.resetTo(0);
                 }
 
-                this.moveTo(-(index * slideWidth));
+                this.moveTo(-(index * moveDistance));
 
                 var dotIndex = (index === slidesLength - 1) ? 0 : index;
                 this.dotFocus(dotIndex);
                 this.index = index;
             };
             slideshow.focusByJs = function(index, whoTrigger) {
-                var slideWidth;
-                if (this.vertical) {
-                    slideWidth = this.slideshowElement.clientHeight;
-                } else {
-                    slideWidth = this.slideshowElement.clientWidth;
-                }
+                var moveDistance = (this.vertical) ? this.height : this.width;
 
                 var start;
                 var slidesLength = this.slides.length;
                 if (index === -1) {
-                    
-                    var distance = -(slidesLength - 1) * slideWidth;
+                    var distance = -(slidesLength - 1) * moveDistance;
                     this.resetTo(distance);
                     index = (slidesLength - 1) - 1;
                     start = distance;
                 } else if (index === slidesLength) { 
-                    
                     this.resetTo(0);
                     index = 1;
                     start = 0;
                 } else if (this.index === slidesLength - 1 && whoTrigger === 'dot') {
-                    
                     this.resetTo(0);
                     start = 0;
                 } else {
-                    start = -(this.index * slideWidth);
+                    start = -(this.index * moveDistance);
                 }
-                var end = -(index * slideWidth);
+                var end = -(index * moveDistance);
+
                 // delete the previous animation
                 if (this.animation) {
                     clearInterval(this.animation);
                 }
 
-                if (this.vertical) {
-                    this.animation = jsAnimation(start, end, this.speed, this.slidesElement, 'marginTop', 'px');
-                } else {
-                    this.animation = jsAnimation(start, end, this.speed, this.slidesElement, 'marginLeft', 'px');
-                }
-
+                var property = (this.vertical) ? 'marginTop' : 'marginLeft';
+                this.animation = jsAnimation(start, end, this.speed, this.slidesElement, property, 'px');
                 var dotIndex = (index === slidesLength - 1) ? 0 : index;
                 this.dotFocus(dotIndex);
                 this.index = index;
@@ -490,27 +479,25 @@ var bamboo = (function(){
             };
             slideshow.focusByJs = function(index, whoTrigger) {
                 var prevIndex = this.index;
-                var width = this.slideshowElement.clientHeight;
-
                 if (index === -1) {
                     index = this.slides.length - 1;
                 } else if (index === this.slides.length) {
                     index = 0;
                 }
 
-                var distance;
+                var startPosition;
                 if (index > prevIndex) {
-                    distance = width;
+                    startPosition = this.height;
                 } else if (index < prevIndex) {
-                    distance = -width;
+                    startPosition = -this.height;
                 }
 
                 if (index === 0 && prevIndex === this.slides.length - 1) {
-                    distance = width;
+                    startPosition = this.height;
                 } else if (index === this.slides.length - 1 && prevIndex === 0) {
-                    distance = -width;
+                    startPosition = -this.height;
                 } else if (whoTrigger === 'dot') {
-                    distance = -width;
+                    startPosition = -this.height;
                 }
 
                 for (var i = 0; i < this.slides.length; i++) {
@@ -521,8 +508,8 @@ var bamboo = (function(){
 
                 currentElement.style.zIndex = '2';
                 this.slides[prevIndex].style.zIndex = '1';
-                currentElement.style.marginTop = distance + 'px';
-                jsAnimation(distance, 0, this.speed, currentElement, 'marginTop', 'px');
+                currentElement.style.marginTop = startPosition + 'px';
+                jsAnimation(startPosition, 0, this.speed, currentElement, 'marginTop', 'px');
 
                 this.dotFocus(index);
                 this.index = index;
@@ -564,17 +551,17 @@ var bamboo = (function(){
                 var tempElement = document.createElement('div');
                 tempElement.style.zIndex = '2';
                 addClass(tempElement, 'tempSlide');
-                tempElement.style.width = this.slides[prevIndex].clientWidth + 'px';
-                tempElement.style.height = this.slides[prevIndex].clientHeight + 'px';
+                tempElement.style.width = this.width + 'px';
+                tempElement.style.height = this.height + 'px';
                 var num = 8;
                 for (var i = 0; i < num; i++) {
                     var child = document.createElement('div');
                     child.style.width = 100 / num + '%';
                     child.style.height = '100%';
-                    child.style.left = i * (this.slides[prevIndex].clientWidth / num) + 'px';
+                    child.style.left = i * (this.width / num) + 'px';
                     child.style.transitionDuration = this.speed / 1000 + 's';
                     var prevSlice = this.slides[prevIndex].cloneNode(true);
-                    prevSlice.style.left = - (this.slides[prevIndex].clientWidth / num) * i + 'px';
+                    prevSlice.style.left = -(this.width / num) * i + 'px';
                     child.appendChild(prevSlice);
                     tempElement.appendChild(child);
                 }
@@ -608,18 +595,18 @@ var bamboo = (function(){
                 var tempElement = document.createElement('div');
                 tempElement.style.zIndex = '2';
                 addClass(tempElement, 'tempSlide');
-                tempElement.style.width = this.slides[prevIndex].clientWidth + 'px';
-                tempElement.style.height = this.slides[prevIndex].clientHeight + 'px';
+                tempElement.style.width = this.width + 'px';
+                tempElement.style.height = this.height + 'px';
                 var num = 8;
                 for (var i = 0; i < num; i++) {
                     var child = document.createElement('div');
                     child.style.width = 100 / num + '%';
                     child.style.height = '100%';
 
-                    child.style.left = i * (this.slides[prevIndex].clientWidth / num) + 'px';
+                    child.style.left = i * (this.width / num) + 'px';
                     child.style.transitionDuration = this.speed / 1000 + 's';
                     var prevSlice = this.slides[prevIndex].cloneNode(true);
-                    prevSlice.style.left = - (this.slides[prevIndex].clientWidth / num) * i + 'px';
+                    prevSlice.style.left = -(this.height / num) * i + 'px';
 
                     child.appendChild(prevSlice);
                     tempElement.appendChild(child);
@@ -629,7 +616,9 @@ var bamboo = (function(){
 
                 for (var i = 0; i < tempElement.children.length; i++) {
                     tempElement.children[i].style.display = document.defaultView.getComputedStyle(tempElement.children[i])['display'];
-                    this.animation = jsAnimation(tempElement.children[i].clientWidth, 0, this.speed, tempElement.children[i], 'width', 'px');
+                    var element = tempElement.children[i];
+                    var width = tempElement.children[i].clientWidth;
+                    this.animation = jsAnimation(width, 0, this.speed, element, 'width', 'px');
                 }
 
                 this.dotFocus(index);
@@ -648,9 +637,6 @@ var bamboo = (function(){
                 this.animationType = 'square';
                 addClass(this.slideshowElement, 'square');
                 this.speed = (this.speed !== undefined) ? this.speed : 600;
-                // this.slides[0].style.zIndex = '2';
-                // this.slides[1].style.zIndex = '1';
-                // addClass(this.dots[0], 'focus');
                 this.slides[this.index].style.zIndex = '2';
                 var next = (this.index < this.slides.length - 1) ? this.index + 1 : 0;
                 this.slides[next].style.zIndex = '1';
@@ -680,8 +666,8 @@ var bamboo = (function(){
                 var tempElement = document.createElement('div');
                 tempElement.style.zIndex = '2';
                 addClass(tempElement, 'tempSlide');
-                tempElement.style.width = this.slides[prevIndex].clientWidth + 'px';
-                tempElement.style.height = this.slides[prevIndex].clientHeight + 'px';
+                tempElement.style.width = this.width + 'px';
+                tempElement.style.height = this.height + 'px';
                 var h = 10;
                 var v = 6;
                 for (var i = 0; i < h * v; i++) {
@@ -747,8 +733,8 @@ var bamboo = (function(){
                 var tempElement = document.createElement('div');
                 tempElement.style.zIndex = '2';
                 addClass(tempElement, 'tempSlide');
-                tempElement.style.width = this.slides[prevIndex].clientWidth + 'px';
-                tempElement.style.height = this.slides[prevIndex].clientHeight + 'px';
+                tempElement.style.width = this.width + 'px';
+                tempElement.style.height = this.height + 'px';
                 var h = 10;
                 var v = 6;
                 for (var i = 0; i < h * v; i++) {
