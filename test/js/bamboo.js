@@ -29,8 +29,63 @@ var bamboo = (function(){
         }
         return false;
     }
+    function resizeDetect(element, callback){
+        // When the element size changes, call the callback function
+        // parameter
+        // element (Object) The monitored element
+        // callback (Function) Invoked after the element size changes
+        var isJsTrigger = false;
+        function reset() {
+            // Reset the scroll bar to the right
+            isJsTrigger = true;
+            expand.scrollLeft = 100000;
+            expand.scrollTop = 100000;
+            shrink.scrollLeft = 100000;
+            shrink.scrollTop = 100000;
+            setTimeout(function(){
+                isJsTrigger = false;
+            }, 1000 / 20);
+        }
+        function onscroll() {
+            if (!isJsTrigger){
+                callback();
+            }  
+            reset();     
+        }
+        var expand = document.createElement('div');
+        var shrink = document.createElement('div');
+        var expandChild = document.createElement('div');
+        var shrinkChild = document.createElement('div');
 
+        containerStyle = 'position: absolute; top: 0; left: 0;bottom: 0; right: 0;overflow: scroll; visibility: hidden;z-index: -1';
+        expand.className = 'expend-detect';
+        expand.style.cssText = containerStyle;
+        shrink.className = 'shrink-detect';
+        shrink.style.cssText = containerStyle; 
+        expandChild.style.width = '100000px';
+        expandChild.style.height = '100000px';
+        shrinkChild.style.width = '300%';
+        shrinkChild.style.height = '300%';
+    
+        expand.appendChild(expandChild);
+        shrink.appendChild(shrinkChild);
+        element.appendChild(expand);
+        element.appendChild(shrink);
+        reset();
+        expand.addEventListener('scroll', onscroll);
+        shrink.addEventListener('scroll', onscroll);
+    }
     function jsAnimation(start, end, duration, element, property, valueUnit) {
+        // Use js animation transition, similar to css transition
+        // parameter
+        // start (Number) The starting value
+        // end (Number) The end value
+        // duration (Number, milliseconds) Duration of the animation
+        // element (Object) Dom element
+        // property (str) element style attribute name, for example: 'marginTop'
+        // valueUnit (str) optional, element style attribute value unit, for example: 'px'
+        // example:
+        // jsAnimation (0, 1, 1000, doucment.body, 'opacity');
         start = parseInt(start);
         end = parseInt(end);
         duration = parseInt(duration);
@@ -72,6 +127,7 @@ var bamboo = (function(){
                 dotsElement: (p.dots !== undefined) ? p.dots : slideshowElement.querySelector('.dots'),
                 prev: (p.prev !== undefined) ? p.prev :slideshowElement.querySelector('.prev'),
                 next: (p.next !== undefined) ? p.next : slideshowElement.querySelector('.next'),
+
                 showDot: p.showDot !== undefined ? p.showDot : true,
                 showArrow: p.showArrow !== undefined ? p.showArrow : true,
 
@@ -79,29 +135,39 @@ var bamboo = (function(){
                 height: p.height !== undefined ? p.height : slideshowElement.clientHeight,
                 backgroundColor: p.backgroundColor,
                 index: p.index !== undefined ? p.index : 0,
-                autoPlay: p.autoPlay !== undefined ? p.autoPlay : true,
                 vertical: p.vertical !== undefined ? p.vertical : false,
 
-                fitImg: p.fitImg !== undefined ? p.fitImg : false,
+                autoPlay: p.autoPlay !== undefined ? p.autoPlay : false,
+                autoFitImg: p.autoFitImg !== undefined ? p.autoFitImg : true,
                 reverse: p.reverse !== undefined ? p.reverse : false,
                 timeout: p.timeout !== undefined ? p.timeout : 2000,
                 jsAnime: p.jsAnime !== undefined ? p.jsAnime : false,
                 
                 pause: false,
-                // del
-                toward: p.toward !== undefined ? p.toward : 'horizontal',
+
+                // toward: p.toward !== undefined ? p.toward : 'horizontal',
             };
 
             slideshow._init = function() {
                 var _this = this;
-                
+
                 if (!this.slidesElement) {
                     throw "Not slides found";
                 }
+
+                // slide automatically resize when the container changes size
+                resizeDetect(this.slideshowElement, function(){
+                    _this.resetSlideSize(); 
+                    if (_this.autoFitImg) {
+                        _this.fitImg();
+                    }
+                });
+
                 this.slides = this.slidesElement.children;
                 addClass(this.slideshowElement, 'bamboo');
                 // dots
                 if (!this.dotsElement) {
+                    // create a navigation button
                     var dotsEelement = document.createElement('ul');
                     addClass(dotsEelement, 'bamboo-dots');
                     for (var i = 0; i < this.slides.length; i++) {
@@ -115,8 +181,9 @@ var bamboo = (function(){
                     }
                 }
                 this.dots = this.dotsElement.children;
-                // arrow
+                
                 if (!this.prev) {
+                    // create previous button
                     this.prev = document.createElement('i');
                     addClass(this.prev, 'bamboo-prev');
                     if (this.showArrow) {
@@ -124,21 +191,23 @@ var bamboo = (function(){
                     }
                 }
                 if (!this.next) {
+                    // create next button
                     this.next = document.createElement('i');
                     addClass(this.next, 'bamboo-next');
                     if (this.showArrow) {
                         this.slideshowElement.appendChild(this.next);
                     }
                 }
-
-                // slide's width/height
+                
                 for (var i = 0; i < this.slides.length; i++) {
+                    // Set the height and width of the slide
                     var slide = this.slides[i];
                     addClass(slide, 'slide');
                     slide.style.width = this.width + 'px';
                     slide.style.height = this.height + 'px';
                 }
-                // dot init
+
+                // nav init
                 for (var i = 0; i < this.dots.length; i++) {
                     var dotEle = _this.dots[i];
                     dotEle.setAttribute('data-index', i);
@@ -150,51 +219,71 @@ var bamboo = (function(){
                     });
                 }
                 // mouse event
-                
+                // Pauses autoplay when the mouse is on the carousel
                 this.slideshowElement.addEventListener('mouseenter', function() {
                     _this.pause = true;
                 });
+                // When the mouse left the carousel, resume autoplay
                 this.slideshowElement.addEventListener('mouseleave', function() {
                     _this.pause = false;
                 });
+                // Previous button
                 this.prev.addEventListener('click', function() {
                     _this.setFocus(_this.index - 1, 'left-key');
                 });
+                // Next button
                 this.next.addEventListener('click', function() {
                     _this.setFocus(_this.index + 1, 'right-key');
                 });
-                // image adaptive container width/height
-                if (this.fitImg) {
-                    var imgList = this.slidesElement.querySelectorAll('img');
-                    var len = imgList.length;
-                    for (var i = 0; i < len; i++) {
-                        var imgElement = imgList[i];
-                        addClass(imgElement, 'fit-img');
-
-                        var imgHeight = imgElement.clientHeight;
-                        var t = this.width / imgElement.clientWidth;
-                        if (imgHeight * t > this.height) {
-                            imgElement.style.width = '100%';
-                        } else {
-                            imgElement.style.height = '100%';
-                        }
-                    }
+                // Change the picture size and coordinates to fit the carousel size
+                if (this.autoFitImg) {
+                    slideshow.fitImg();
                 }
-                // set background-color
+                
                 if (this.backgroundColor) {
+                    // set the background color
                     this.slidesElement.style.backgroundColor = this.backgroundColor;
                     var len = this.slides.length;
                     for (var i = 0; i < len; i++) {
                         this.slides[i].style.backgroundColor = this.backgroundColor;
                     }
                 }
-                // If use js to calculate the animation,
-                // delete css property: transition
+                
                 if (this.jsAnime) {
+                    // Use js to calculate animation transition
+                    // Remove the transition property to prevent css animation and js animation conflict
                     addClass(this.slideshowElement, 'jsAnime');
                 }
             };
+            slideshow.resetSlideSize = function() {
+                for (var i = 0; i < this.slides.length; i++) {
+                    var slide = this.slides[i];
+                    this.width = this.slideshowElement.clientWidth;
+                    this.height = this.slideshowElement.clientHeight;
+                    slide.style.width = this.width + 'px';
+                    slide.style.height = this.height + 'px';
+                }                
+            };
+            slideshow.fitImg = function(){
+                var imgList = this.slidesElement.querySelectorAll('img');
+                var len = imgList.length;
+                for (var i = 0; i < len; i++) {
+                    var imgElement = imgList[i];
+                    addClass(imgElement, 'fit-img');
+
+                    var imgHeight = imgElement.clientHeight;
+                    var t = this.width / imgElement.clientWidth;
+                    if (imgHeight * t > this.height) {
+                        imgElement.style.height = 'auto';
+                        imgElement.style.width = this.width;
+                    } else {
+                        imgElement.style.width = 'auto';
+                        imgElement.style.height = this.height;
+                    }
+                }
+            }
             slideshow.dotFocus = function(index) {
+                // switch the focus of the nav
                 var dLen = this.dots.length;
                 for (var i = 0; i < dLen; i++) {
                     var dotEle = this.dots[i];
@@ -210,15 +299,12 @@ var bamboo = (function(){
 
                 var _this = this;
                 this._runAnimation = setInterval(function() {
-                    if (_this.autoPlay && !_this.pause) {
+                    if (!_this.pause) {
                         var index = (_this.reverse) ? _this.index - 1 : _this.index + 1;
                         _this.setFocus(index);
                     }
                 }, this.timeout + this.speed);
             };
-            slideshow.play = function() {
-                this.autoPlay = true;
-            }
             slideshow.stop = function() {
                 this.autoPlay = false;
             };
@@ -252,7 +338,9 @@ var bamboo = (function(){
                 this.slidesElement.appendChild(endSlide);
 
                 this.setFocus(this.index);
-                this.run();
+                if (this.autoPlay) {
+                    this.run();
+                }
             };
             slideshow.moveTo = function(distance) {
                 var style = this.slidesElement.style;
@@ -350,7 +438,9 @@ var bamboo = (function(){
                 }
                 addClass(this.slideshowElement, 'fade');
                 this.setFocus(this.index);
-                this.run();
+                if (this.autoPlay) {
+                    this.run();
+                }
             };
             slideshow.focusByCss = function(index, whoTrigger) {
                 var prevIndex = this.index;
@@ -434,7 +524,9 @@ var bamboo = (function(){
 
                 this.setFocus(this.index);
                 // this.slidesElement.style.transform = 'translate3d(0px, 0px, 0px)';
-                this.run();
+                if (this.autoPlay) {
+                    this.run();
+                }
             };
             slideshow.focusByCss = function(index, whoTrigger) {
                 var prevIndex = this.index;
@@ -531,7 +623,9 @@ var bamboo = (function(){
                 var next = (this.index < this.slides.length - 1) ? this.index + 1 : 0;
                 this.slides[next].style.zIndex = '1';
                 this.dotFocus(this.index);
-                this.run();
+                if (this.autoPlay) {
+                    this.run();
+                }
             };
             slideshow.focusByCss = function(index, whoTrigger) {
                 var prevIndex = this.index;
@@ -641,7 +735,9 @@ var bamboo = (function(){
                 var next = (this.index < this.slides.length - 1) ? this.index + 1 : 0;
                 this.slides[next].style.zIndex = '1';
                 this.dotFocus(this.index);
-                this.run();
+                if (this.autoPlay) {
+                    this.run();
+                }
             };
             slideshow.focusByCss = function(index, whoTrigger) {
                 var prevIndex = this.index;
@@ -782,7 +878,7 @@ var bamboo = (function(){
         },
     };
 
-    function bamboo(slideshowElement, animationType, parameters) {
+    function package(slideshowElement, animationType, parameters) {
         var s;
         switch (animationType) {
             case 'roll':
@@ -806,5 +902,5 @@ var bamboo = (function(){
         return s;
     }
 
-    return bamboo;
+    return package;
 })();

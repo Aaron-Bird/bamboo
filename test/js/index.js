@@ -8,7 +8,6 @@ var fade = bamboo(ele, 'fade',{
     dots: document.querySelector('.m-nav'),
     prev: document.querySelector('.m-prev'),
     next: document.querySelector('.m-next'),
-
 });
 
 // fade
