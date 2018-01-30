@@ -137,7 +137,7 @@ var bamboo = (function(){
                 index: p.index !== undefined ? p.index : 0,
                 vertical: p.vertical !== undefined ? p.vertical : false,
 
-                autoPlay: p.autoPlay !== undefined ? p.autoPlay : false,
+                autoPlay: p.autoPlay !== undefined ? p.autoPlay : true,
                 autoFitImg: p.autoFitImg !== undefined ? p.autoFitImg : true,
                 reverse: p.reverse !== undefined ? p.reverse : false,
                 timeout: p.timeout !== undefined ? p.timeout : 2000,
@@ -256,6 +256,7 @@ var bamboo = (function(){
                 }
             };
             slideshow.resetSlideSize = function() {
+                // resize the slide size to match the slideshow
                 for (var i = 0; i < this.slides.length; i++) {
                     var slide = this.slides[i];
                     this.width = this.slideshowElement.clientWidth;
@@ -265,6 +266,7 @@ var bamboo = (function(){
                 }                
             };
             slideshow.fitImg = function(){
+                // resize the image to match the slideshow 
                 var imgList = this.slidesElement.querySelectorAll('img');
                 var len = imgList.length;
                 for (var i = 0; i < len; i++) {
@@ -281,17 +283,9 @@ var bamboo = (function(){
                         imgElement.style.height = this.height;
                     }
                 }
-            }
-            slideshow.dotFocus = function(index) {
-                // switch the focus of the nav
-                var dLen = this.dots.length;
-                for (var i = 0; i < dLen; i++) {
-                    var dotEle = this.dots[i];
-                    removeClass(dotEle, 'focus');
-                }
-                addClass(this.dots[index], 'focus');
             };
             slideshow.run = function() {
+                // start playing the slideshow
                 this.speed = (this.speed !== undefined) ? this.speed : 1000;
                 if (this._runAnimation) {
                     clearInterval(this._runAnimation);
@@ -306,9 +300,21 @@ var bamboo = (function(){
                 }, this.timeout + this.speed);
             };
             slideshow.stop = function() {
-                this.autoPlay = false;
+                // Stop playing the slideshow 
+                if (this._runAnimation) {
+                    clearInterval(this._runAnimation);
+                }
+            };
+            slideshow.toNext = function(){
+                // jump to the previous page
+                _this.setFocus(_this.index - 1, 'left-key');
+            };
+            slideshow.toPrev = function(){
+                // jump to the next page
+                _this.setFocus(_this.index + 1, 'right-key');
             };
             slideshow.setFocus = function(index, whoTrigger) {
+                // jump to the page by index
                 if (this.jsAnime || isIe9()) {
                     slideshow.focusByJs(index, whoTrigger);
                 } else {
@@ -316,7 +322,17 @@ var bamboo = (function(){
                 }
             };
             slideshow.getFocus = function(){
+                // get the index of the currently displayed page
                 return this.index;
+            };
+            slideshow.dotFocus = function(index) {
+                // switch the focus of the nav
+                var dLen = this.dots.length;
+                for (var i = 0; i < dLen; i++) {
+                    var dotEle = this.dots[i];
+                    removeClass(dotEle, 'focus');
+                }
+                addClass(this.dots[index], 'focus');
             };
             slideshow._init();
             return slideshow;
@@ -328,16 +344,19 @@ var bamboo = (function(){
             var slideshow = Bamboo.createNew(slideshowElement, parameters);
             slideshow.init = function() {
                 this.animationType = 'roll';
+                addClass(this.slideshowElement, 'roll');
+
                 this.speed = (this.speed !== undefined) ? this.speed : 200;
                 this.slidesElement.style.transitionDuration = this.speed / 1000 + 's';
-                addClass(this.slideshowElement, 'roll');
+                
                 if (!this.vertical) {
                     addClass(this.slideshowElement, 'roll-horizontal');
                 }
+
                 var endSlide = this.slides[0].cloneNode(true);
                 this.slidesElement.appendChild(endSlide);
-
                 this.setFocus(this.index);
+
                 if (this.autoPlay) {
                     this.run();
                 }
@@ -345,12 +364,14 @@ var bamboo = (function(){
             slideshow.moveTo = function(distance) {
                 var style = this.slidesElement.style;
                 if (this.vertical) {
+                    // scroll vertically
                     if (this.jsAnime || isIe9()) {
                         style.marginTop = distance + 'px';
                     } else {
                         style.transform = 'translate3d( 0px, ' + distance + 'px, 0px)';
                     }
                 } else {
+                    // scroll horizontally
                     if (this.jsAnime || isIe9()) {
                         style.marginLeft = distance + 'px';
                     } else {
@@ -360,6 +381,7 @@ var bamboo = (function(){
             };
 
             slideshow.resetTo = function(distance) {
+                // reset the moving distance without animating
                 var transitionProperty = getComputedStyle(this.slidesElement, null).getPropertyValue('transition-property');
                 this.slidesElement.style.transitionProperty = 'none';
                 this.moveTo(distance);
@@ -370,15 +392,12 @@ var bamboo = (function(){
                 var moveDistance = (this.vertical) ? this.height : this.width;
                 var slidesLength = this.slides.length;
                 if (index === -1) {
-                    // reset slide to last one
                     this.resetTo(-(slidesLength - 1) * moveDistance);
                     index = (slidesLength - 1) - 1;
                 } else if (index === slidesLength) {
-                    // reset slide to 0
                     this.resetTo(0);
                     index = 1;
                 } else if (this.index === slidesLength - 1 && whoTrigger === 'dot') {
-                    // click dot on the last slide. reset slide to 0
                     this.resetTo(0);
                 }
 
@@ -410,13 +429,12 @@ var bamboo = (function(){
                 }
                 var end = -(index * moveDistance);
 
-                // delete the previous animation
                 if (this.animation) {
                     clearInterval(this.animation);
                 }
-
                 var property = (this.vertical) ? 'marginTop' : 'marginLeft';
                 this.animation = jsAnimation(start, end, this.speed, this.slidesElement, property, 'px');
+                
                 var dotIndex = (index === slidesLength - 1) ? 0 : index;
                 this.dotFocus(dotIndex);
                 this.index = index;
@@ -443,63 +461,58 @@ var bamboo = (function(){
                 }
             };
             slideshow.focusByCss = function(index, whoTrigger) {
-                var prevIndex = this.index;
                 if (index === -1) {
                     index = this.slides.length - 1;
                 } else if (index === this.slides.length) {
                     index = 0;
                 }
 
-                var sLen = this.slides.length;
-                for (var i = 0; i < sLen; i++) {
-                    var slideEle = this.slides[i];
-                    slideEle.style.zIndex = '0';
-                    slideEle.style.opacity = '0';
+                for (var i = 0; i < this.slides.length; i++) {
+                    this.slides[i].style.zIndex = '0';
+                    this.slides[i].style.visibility = 'hidden';
                 }
 
                 var current = this.slides[index];
-                var transitionProperty = getComputedStyle(current, null).getPropertyValue('transition-property');
-                // close the animtion
+                var previous = this.slides[this.index];
+                var saveTransitionProperty = getComputedStyle(current, null).getPropertyValue('transition-property');
                 current.style.transitionProperty = 'none';
-                // z-index
-                this.slides[prevIndex].style.zIndex = '1';
+                previous.style.zIndex = '1';
                 current.style.zIndex = '2';
-                // opactiy
-                this.slides[prevIndex].style.opacity = '1';
                 current.style.opacity = '0';
-                // refresh
+                current.style.visibility = 'visible';
+                previous.style.visibility = 'visible';
                 current.style.display = document.defaultView.getComputedStyle(current)['display'];
-                // display the animation
-                current.style.transitionProperty = transitionProperty || 'all';
+                current.style.transitionProperty = saveTransitionProperty || 'all';
 
-                // display the current slide
                 current.style.opacity = '1';
-                // set the dot focus
+
                 this.dotFocus(index);
                 this.index = index;
             };
             slideshow.focusByJs = function(index, whoTrigger) {
-                var prevIndex = this.index;
+                if (this.animation) {
+                    clearInterval(this.animation);
+                }
+
                 if (index === -1) {
                     index = this.slides.length - 1;
                 } else if (index === this.slides.length) {
                     index = 0;
                 }
 
-                if (this.animation) {
-                    clearInterval(this.animation);
-                }
                 for (var i = 0; i < this.slides.length; i++) {
-                    var slideEle = this.slides[i];
-                    slideEle.style.zIndex = '0';
-                    slideEle.style.opacity = '0';
+                    this.slides[i].style.zIndex = '0';
+                    this.slides[i].style.visibility = 'hidden';
                 }
 
-                this.slides[prevIndex].style.zIndex = '1';
-                this.slides[prevIndex].style.opacity = '1';
-                this.slides[index].style.zIndex = '2';
+                var current = this.slides[index];
+                var previous = this.slides[this.index];
+                current.style.zIndex = '2';
+                previous.style.zIndex = '1';
+                current.style.opacity = '0';
+                current.style.visibility = 'visible';
+                previous.style.visibility = 'visible';
 
-                this.slides[index].style.opacity = '0';
                 this.animation = jsAnimation(0, 1, this.speed, this.slides[index], 'opacity');
 
                 this.dotFocus(index);
@@ -511,66 +524,25 @@ var bamboo = (function(){
         },
     };
 
-    var Down = {
+    var Into = {
         createNew: function(slideshowElement, parameters) {
             var slideshow = Bamboo.createNew(slideshowElement, parameters);
             slideshow.init = function() {
-                this.animationType = 'down';
+                this.animationType = 'into';
+                addClass(this.slideshowElement, 'into');
+
                 this.speed = (this.speed !== undefined) ? this.speed : 200;
                 for (var i = 0; i < this.slides.length; i++) {
                     this.slides[i].style.transitionDuration = this.speed / 1000 + 's';
                 };
-                addClass(this.slideshowElement, 'down');
-
+                
                 this.setFocus(this.index);
-                // this.slidesElement.style.transform = 'translate3d(0px, 0px, 0px)';
                 if (this.autoPlay) {
                     this.run();
                 }
             };
             slideshow.focusByCss = function(index, whoTrigger) {
-                var prevIndex = this.index;
-                if (index === -1) {
-                    index = this.slides.length - 1;
-                } else if (index === this.slides.length) {
-                    index = 0;
-                }
-
-                var distance;
-                if (index > prevIndex) {
-                    distance = '100%';
-                } else if (index < prevIndex) {
-                    distance = '-100%';
-                }
-
-                if (index === 0 && prevIndex === this.slides.length - 1) {
-                    distance = '100%';
-                } else if (index === this.slides.length - 1 && prevIndex === 0) {
-                    distance = '-100%';
-                } else if (whoTrigger === 'dot') {
-                    distance = '-100%';
-                }
-
-                for (var i = 0; i < this.slides.length; i++) {
-                    this.slides[i].style.zIndex = '0';
-                }
-                var currentElement = this.slides[index];
-                var transitionProperty = currentElement.style.transitionProperty;
-
-                currentElement.style.zIndex = '2';
-                this.slides[prevIndex].style.zIndex = '1';
-                currentElement.style.transitionProperty = 'none';
-                currentElement.style.transform = 'translate3d(0px, ' + distance + ', 0px)';
-                currentElement.style.display = document.defaultView.getComputedStyle(currentElement)['display'];
-                currentElement.style.transitionProperty = transitionProperty || 'transform';
-
-                currentElement.style.transform = 'translate3d(0px, 0px, 0px)';
-
-                this.dotFocus(index);
-                this.index = index;
-            };
-            slideshow.focusByJs = function(index, whoTrigger) {
-                var prevIndex = this.index;
+                var previousIndex = this.index;
                 if (index === -1) {
                     index = this.slides.length - 1;
                 } else if (index === this.slides.length) {
@@ -578,15 +550,58 @@ var bamboo = (function(){
                 }
 
                 var startPosition;
-                if (index > prevIndex) {
+                if (index > previousIndex) {
+                    startPosition = '100%';
+                } else if (index < previousIndex) {
+                    startPosition = '-100%';
+                }
+
+                if (index === 0 && previousIndex === this.slides.length - 1) {
+                    startPosition = '100%';
+                } else if (index === this.slides.length - 1 && previousIndex === 0) {
+                    startPosition = '-100%';
+                } else if (whoTrigger === 'dot') {
+                    startPosition = '-100%';
+                }
+
+                for (var i = 0; i < this.slides.length; i++) {
+                    this.slides[i].style.zIndex = '0';
+                }
+
+                var current = this.slides[index];
+                var previous = this.slides[this.index];
+                // var transitionProperty = current.style.transitionProperty;
+                var transitionProperty =  getComputedStyle(current, null).getPropertyValue('transition-property');
+                current.style.zIndex = '2';
+                previous.style.zIndex = '1';
+                current.style.transitionProperty = 'none';
+                current.style.transform = 'translate3d(0px, ' + startPosition + ', 0px)';
+                current.style.display = document.defaultView.getComputedStyle(current)['display'];
+                current.style.transitionProperty = transitionProperty || 'transform';
+
+                current.style.transform = 'translate3d(0px, 0px, 0px)';
+
+                this.dotFocus(index);
+                this.index = index;
+            };
+            slideshow.focusByJs = function(index, whoTrigger) {
+                var previousIndex = this.index;
+                if (index === -1) {
+                    index = this.slides.length - 1;
+                } else if (index === this.slides.length) {
+                    index = 0;
+                }
+
+                var startPosition;
+                if (index > previousIndex) {
                     startPosition = this.height;
-                } else if (index < prevIndex) {
+                } else if (index < previousIndex) {
                     startPosition = -this.height;
                 }
 
-                if (index === 0 && prevIndex === this.slides.length - 1) {
+                if (index === 0 && previousIndex === this.slides.length - 1) {
                     startPosition = this.height;
-                } else if (index === this.slides.length - 1 && prevIndex === 0) {
+                } else if (index === this.slides.length - 1 && previousIndex === 0) {
                     startPosition = -this.height;
                 } else if (whoTrigger === 'dot') {
                     startPosition = -this.height;
@@ -595,13 +610,15 @@ var bamboo = (function(){
                 for (var i = 0; i < this.slides.length; i++) {
                     this.slides[i].style.zIndex = '0';
                 }
-                var currentElement = this.slides[index];
-                var transitionProperty = currentElement.style.transitionProperty;
 
-                currentElement.style.zIndex = '2';
-                this.slides[prevIndex].style.zIndex = '1';
-                currentElement.style.marginTop = startPosition + 'px';
-                jsAnimation(startPosition, 0, this.speed, currentElement, 'marginTop', 'px');
+                var current = this.slides[index];
+                var previous = this.slides[this.index];
+                // var transitionProperty = current.style.transitionProperty;
+                var transitionProperty =  getComputedStyle(current, null).getPropertyValue('transition-property');
+                current.style.zIndex = '2';
+                previous.style.zIndex = '1';
+                current.style.marginTop = startPosition + 'px';
+                jsAnimation(startPosition, 0, this.speed, current, 'marginTop', 'px');
 
                 this.dotFocus(index);
                 this.index = index;
@@ -618,35 +635,39 @@ var bamboo = (function(){
             slideshow.init = function() {
                 this.animationType = 'blinds';
                 addClass(this.slideshowElement, 'blinds');
+
                 this.speed = (this.speed !== undefined) ? this.speed : 600;
                 this.slides[this.index].style.zIndex = '2';
+
                 var next = (this.index < this.slides.length - 1) ? this.index + 1 : 0;
                 this.slides[next].style.zIndex = '1';
                 this.dotFocus(this.index);
+
                 if (this.autoPlay) {
                     this.run();
                 }
             };
             slideshow.focusByCss = function(index, whoTrigger) {
-                var prevIndex = this.index;
-
                 if (index === -1) {
                     index = this.slides.length - 1;
                 } else if (index === this.slides.length) {
                     index = 0;
                 }
 
-                var tempElement = this.slideshowElement.querySelector('.tempSlide');
-                if (tempElement) {
-                    tempElement.parentElement.removeChild(tempElement);
-                }
+                var current = this.slides[index];
+                var previous = this.slides[this.index];
+                current.style.zIndex = '1'; 
+                previous.style.zIndex = '0';
 
-                this.slides[index].style.zIndex = '1';
-                var tempElement = document.createElement('div');
-                tempElement.style.zIndex = '2';
-                addClass(tempElement, 'tempSlide');
-                tempElement.style.width = this.width + 'px';
-                tempElement.style.height = this.height + 'px';
+                var temp = this.slideshowElement.querySelector('.tempSlide');
+                if (temp) {
+                    temp.parentElement.removeChild(temp);
+                }
+                temp = document.createElement('div');
+                addClass(temp, 'tempSlide');
+                temp.style.zIndex = '2';
+                temp.style.width = this.width + 'px';
+                temp.style.height = this.height + 'px';
                 var num = 8;
                 for (var i = 0; i < num; i++) {
                     var child = document.createElement('div');
@@ -654,17 +675,17 @@ var bamboo = (function(){
                     child.style.height = '100%';
                     child.style.left = i * (this.width / num) + 'px';
                     child.style.transitionDuration = this.speed / 1000 + 's';
-                    var prevSlice = this.slides[prevIndex].cloneNode(true);
-                    prevSlice.style.left = -(this.width / num) * i + 'px';
-                    child.appendChild(prevSlice);
-                    tempElement.appendChild(child);
+                    var previousClone = previous.cloneNode(true);
+                    previousClone.style.left = -(this.width / num) * i + 'px';
+                    child.appendChild(previousClone);
+                    temp.appendChild(child);
                 }
-                this.slideshowElement.appendChild(tempElement);
-                this.slides[prevIndex].style.zIndex = '0';
+                this.slideshowElement.appendChild(temp);
 
-                for (var i = 0; i < tempElement.children.length; i++) {
-                    tempElement.children[i].style.display = document.defaultView.getComputedStyle(tempElement.children[i])['display'];
-                    tempElement.children[i].style.width = 0;
+                for (var i = 0; i < temp.children.length; i++) {
+                    var child = temp.children[i];
+                    child.style.display = document.defaultView.getComputedStyle(child)['display'];
+                    child.style.width = 0;  
                 }
 
                 this.dotFocus(index);
@@ -679,40 +700,40 @@ var bamboo = (function(){
                     index = 0;
                 }
 
-                var tempElement = this.slideshowElement.querySelector('.tempSlide');
-                if (tempElement) {
-                    clearInterval(this.animation);
-                    tempElement.parentElement.removeChild(tempElement);
-                }
+                var current = this.slides[index];
+                var previous = this.slides[this.index];
+                current.style.zIndex = '1'; 
+                previous.style.zIndex = '0';
 
-                this.slides[index].style.zIndex = '1';
-                var tempElement = document.createElement('div');
-                tempElement.style.zIndex = '2';
-                addClass(tempElement, 'tempSlide');
-                tempElement.style.width = this.width + 'px';
-                tempElement.style.height = this.height + 'px';
+                var temp = this.slideshowElement.querySelector('.tempSlide');
+                if (temp) {
+                    clearInterval(this.animation);
+                    temp.parentElement.removeChild(temp);
+                }
+                temp = document.createElement('div');
+                addClass(temp, 'tempSlide');
+                temp.style.zIndex = '2';
+                temp.style.width = this.width + 'px';
+                temp.style.height = this.height + 'px';
                 var num = 8;
                 for (var i = 0; i < num; i++) {
                     var child = document.createElement('div');
                     child.style.width = 100 / num + '%';
                     child.style.height = '100%';
-
                     child.style.left = i * (this.width / num) + 'px';
                     child.style.transitionDuration = this.speed / 1000 + 's';
-                    var prevSlice = this.slides[prevIndex].cloneNode(true);
-                    prevSlice.style.left = -(this.height / num) * i + 'px';
-
-                    child.appendChild(prevSlice);
-                    tempElement.appendChild(child);
+                    var previousClone = previous.cloneNode(true);
+                    previousClone.style.left = -(this.width / num) * i + 'px';
+                    child.appendChild(previousClone);
+                    temp.appendChild(child);
                 }
-                this.slideshowElement.appendChild(tempElement);
-                this.slides[prevIndex].style.zIndex = '0';
+                this.slideshowElement.appendChild(temp);
 
-                for (var i = 0; i < tempElement.children.length; i++) {
-                    tempElement.children[i].style.display = document.defaultView.getComputedStyle(tempElement.children[i])['display'];
-                    var element = tempElement.children[i];
-                    var width = tempElement.children[i].clientWidth;
-                    this.animation = jsAnimation(width, 0, this.speed, element, 'width', 'px');
+                for (var i = 0; i < temp.children.length; i++) {
+                    var child = temp.children[i];
+                    child.style.display = document.defaultView.getComputedStyle(child)['display'];
+                    var width =  child.clientWidth;
+                    this.animation = jsAnimation(width, 0, this.speed, child, 'width', 'px');
                 }
 
                 this.dotFocus(index);
@@ -730,10 +751,13 @@ var bamboo = (function(){
             slideshow.init = function() {
                 this.animationType = 'square';
                 addClass(this.slideshowElement, 'square');
-                this.speed = (this.speed !== undefined) ? this.speed : 600;
+
+                this.speed = (this.speed !== undefined) ? this.speed : 1000;
+
                 this.slides[this.index].style.zIndex = '2';
                 var next = (this.index < this.slides.length - 1) ? this.index + 1 : 0;
                 this.slides[next].style.zIndex = '1';
+
                 this.dotFocus(this.index);
                 if (this.autoPlay) {
                     this.run();
@@ -746,57 +770,56 @@ var bamboo = (function(){
                     index = this.slides.length - 1;
                 } else if (index === this.slides.length) {
                     index = 0;
-                } else if (index === prevIndex) {
+                } else if (index === this.index) {
                     return;
                 }
-                var _this = this;
-                var tempElement = this.slideshowElement.querySelector('.tempSlide');
-                if (tempElement) {
-                    tempElement.parentElement.removeChild(tempElement);
+
+                var current = this.slides[index];
+                var previous = this.slides[this.index];
+                current.style.zIndex = '1';
+                previous.style.zIndex = '0';
+                
+                var temp = this.slideshowElement.querySelector('.tempSlide');
+                if (temp) {
                     clearInterval(this.animation);
+                    temp.parentElement.removeChild(temp);
                 }
-
-                this.slides[prevIndex].style.zIndex = '0';
-                this.slides[index].style.zIndex = '1';
-
-                var tempElement = document.createElement('div');
-                tempElement.style.zIndex = '2';
-                addClass(tempElement, 'tempSlide');
-                tempElement.style.width = this.width + 'px';
-                tempElement.style.height = this.height + 'px';
+                temp = document.createElement('div');
+                temp.style.zIndex = '2';
+                addClass(temp, 'tempSlide');
+                temp.style.width = this.width + 'px';
+                temp.style.height = this.height + 'px';
                 var h = 10;
                 var v = 6;
                 for (var i = 0; i < h * v; i++) {
-                    var childElement = document.createElement('div');
-                    var prevElementSqare = this.slides[prevIndex].cloneNode(true);
+                    var child = document.createElement('div');
+                    child.style.width = 100 / h + '%';
+                    child.style.height = 100 / v + '%';
+                    child.style.transitionDuration = this.speed / (h * v / 4) / 1000 + 's';
 
-                    childElement.style.width = 100 / h + '%';
-                    childElement.style.height = 100 / v + '%';
-                    childElement.style.transitionDuration = this.speed / (h * v / 4) / 1000 + 's';
-                    prevElementSqare.style.top = -100 * Math.floor(i / h) + '%';
-                    prevElementSqare.style.left = -100 * (i % h) + '%';
+                    var previousClone = previous.cloneNode(true);
+                    previousClone.style.top = -100 * Math.floor(i / h) + '%';
+                    previousClone.style.left = -100 * (i % h) + '%';
 
-                    childElement.appendChild(prevElementSqare);
-                    tempElement.appendChild(childElement);
+                    child.appendChild(previousClone);
+                    temp.appendChild(child);
                 }
-                this.slideshowElement.appendChild(tempElement);
+                this.slideshowElement.appendChild(temp);
 
                 var i = 0;
                 var _this = this;
-                var len = tempElement.children.length;
-                var squareList = Array.apply(null, { length: len }).map(Number.call, Number);
+                var squareList = Array.apply(null, { length: temp.children.length }).map(Number.call, Number);
                 this.animation = setInterval(function() {
                     if (!squareList) {
                         clearInterval(_this.animation);
-                        tempElement.parentElement.removeChild(tempElement);
-                        _this.slides[index].style.zIndex = '2';
+                        temp.parentElement.removeChild(temp);
                     } else {
                         for (var j = 0; j < 4; j++) {
                             if (squareList.length > 0) {
                                 var random = Math.floor(Math.random() * squareList.length);
                                 var k = squareList.splice(random, 1)[0];
-                                tempElement.children[k].style.opacity = '0';
-                                tempElement.children[k].style.visibility = 'hidden';
+                                // temp.children[k].style.opacity = '0';
+                                temp.children[k].style.visibility = 'hidden';
                             }
                         }
                         i++;
@@ -813,61 +836,61 @@ var bamboo = (function(){
                     index = this.slides.length - 1;
                 } else if (index === this.slides.length) {
                     index = 0;
-                } else if (index === prevIndex) {
+                } else if (index === this.index) {
                     return;
                 }
-                var _this = this;
-                var tempElement = this.slideshowElement.querySelector('.tempSlide');
-                if (tempElement) {
-                    tempElement.parentElement.removeChild(tempElement);
+
+                var current = this.slides[index];
+                var previous = this.slides[this.index];
+                current.style.zIndex = '1';
+                previous.style.zIndex = '0';
+                
+                var temp = this.slideshowElement.querySelector('.tempSlide');
+                if (temp) {
                     clearInterval(this.animation);
+                    temp.parentElement.removeChild(temp);
                 }
-
-                this.slides[prevIndex].style.zIndex = '0';
-                this.slides[index].style.zIndex = '1';
-
-                var tempElement = document.createElement('div');
-                tempElement.style.zIndex = '2';
-                addClass(tempElement, 'tempSlide');
-                tempElement.style.width = this.width + 'px';
-                tempElement.style.height = this.height + 'px';
+                temp = document.createElement('div');
+                temp.style.zIndex = '2';
+                addClass(temp, 'tempSlide');
+                temp.style.width = this.width + 'px';
+                temp.style.height = this.height + 'px';
                 var h = 10;
                 var v = 6;
                 for (var i = 0; i < h * v; i++) {
-                    var childElement = document.createElement('div');
-                    var prevElementSqare = this.slides[prevIndex].cloneNode(true);
+                    var child = document.createElement('div');
+                    child.style.width = 100 / h + '%';
+                    child.style.height = 100 / v + '%';
+                    child.style.transitionDuration = this.speed / (h * v / 4) / 1000 + 's';
 
-                    childElement.style.width = 100 / h + '%';
-                    childElement.style.height = 100 / v + '%';
-                    prevElementSqare.style.top = -100 * Math.floor(i / h) + '%';
-                    prevElementSqare.style.left = -100 * (i % h) + '%';
+                    var previousClone = previous.cloneNode(true);
+                    previousClone.style.top = -100 * Math.floor(i / h) + '%';
+                    previousClone.style.left = -100 * (i % h) + '%';
 
-                    childElement.appendChild(prevElementSqare);
-                    tempElement.appendChild(childElement);
+                    child.appendChild(previousClone);
+                    temp.appendChild(child);
                 }
-                this.slideshowElement.appendChild(tempElement);
-
+                this.slideshowElement.appendChild(temp);  
                 var i = 0;
                 var _this = this;
-                var len = tempElement.children.length;
-                var squareList = Array.apply(null, { length: len }).map(Number.call, Number);
+                var squareList = Array.apply(null, { length: temp.children.length }).map(Number.call, Number);
                 this.animation = setInterval(function() {
                     if (!squareList) {
                         clearInterval(_this.animation);
-                        tempElement.parentElement.removeChild(tempElement);
-                        _this.slides[index].style.zIndex = '2';
+                        temp.parentElement.removeChild(temp);
                     } else {
                         for (var j = 0; j < 4; j++) {
                             if (squareList.length > 0) {
                                 var random = Math.floor(Math.random() * squareList.length);
                                 var k = squareList.splice(random, 1)[0];
-                                var element = tempElement.children[k];
-                                jsAnimation(1, 0, this.speed / (h * v / 4), element, 'opacity');
+                                var child = temp.children[k];
+                                child.style.visibility = 'hidden';
+                                jsAnimation(1, 0, this.speed / (h * v / 4), child, 'opacity');
                             }
                         }
                         i++;
                     }
-                }, this.speed / (h * v / 4));
+                }, this.speed / (h * v / 4));  
 
                 this.dotFocus(index);
                 this.index = index;
@@ -887,8 +910,8 @@ var bamboo = (function(){
             case 'fade':
                 s = Fade.createNew(slideshowElement, parameters);
                 break;
-            case 'down':
-                s = Down.createNew(slideshowElement, parameters);
+            case 'into':
+                s = Into.createNew(slideshowElement, parameters);
                 break;
             case 'blinds':
                 s = Blinds.createNew(slideshowElement, parameters);

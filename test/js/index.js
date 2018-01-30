@@ -51,23 +51,24 @@ var roll = bamboo(ele, 'roll',{
     jsAnime: true,
     vertical: true,
 });
-// down
-var ele = document.querySelector('.t-down');
-var down = bamboo(ele, 'down',{
+// into
+var ele = document.querySelector('.t-into');
+var into = bamboo(ele, 'into',{
 
 });
 
-var ele = document.querySelector('.t-down-reverse');
-var down = bamboo(ele, 'down',{
+var ele = document.querySelector('.t-into-reverse');
+var into = bamboo(ele, 'into',{
     reverse: true,
 });
 
-var ele = document.querySelector('.t-down-js');
-var down = bamboo(ele, 'down',{
+var ele = document.querySelector('.t-into-js');
+var into = bamboo(ele, 'into',{
     jsAnime: true,
 });
 
 // blinds
+// 
 var ele = document.querySelector('.t-blinds');
 var blinds = bamboo(ele, 'blinds',{
 
