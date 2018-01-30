@@ -5,6 +5,7 @@
     height: 100%;
     padding: 0px!important;
     font-size: 16px;
+    /* transform: translate3d(0px, 0px, 0px); */
 }
 
 .bamboo>.slides {
@@ -112,7 +113,7 @@
 }
 
 .bamboo.fade {
-    /* overflow: hidden; */
+
 }
 
 .bamboo.fade>.slides>* {
@@ -122,28 +123,31 @@
     transition: opacity 0.6s;
 }
 
-
-.bamboo.down {
-    /* overflow: hidden; */
+.bamboo.fade.jsAnime>.slides>* {
+    transition: none;
 }
 
-.bamboo.down>.slides {
+.bamboo.into {
+
+}
+
+.bamboo.into>.slides {
     position: relative;
     z-index: 0;
 }
 
-.bamboo.down>.slides>* {
+.bamboo.into>.slides>* {
     position: absolute;
     top: 0;
     left: 0;
     transition: transform 0.4s linear;
 }
 
-.bamboo.down.jsAnime>.slides>* {
+.bamboo.into.jsAnime>.slides>* {
     transition: none;
 }
 
-.bamboo.down>.bamboo-dots {
+.bamboo.into>.bamboo-dots {
     top: 50%;
     right: 10px;
     bottom: auto;
@@ -152,11 +156,11 @@
     transform: translateY(-50%);
 }
 
-.bamboo.down>.bamboo-dots>* {
+.bamboo.into>.bamboo-dots>* {
     margin: 5px 0;
 }
 
-.bamboo.down>.bamboo-prev {
+.bamboo.into>.bamboo-prev {
     top: 2px;
     left: 50%;
     transform: rotate(-90deg);
@@ -166,7 +170,7 @@
     /* filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.1)); */
 }
 
-.bamboo.down>.bamboo-next {
+.bamboo.into>.bamboo-next {
     top: auto;
     bottom: 2px;
     left: 50%;
