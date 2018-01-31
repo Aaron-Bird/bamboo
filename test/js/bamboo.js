@@ -136,7 +136,7 @@ var bamboo = (function(){
                 backgroundColor: p.backgroundColor,
                 index: p.index !== undefined ? p.index : 0,
                 vertical: p.vertical !== undefined ? p.vertical : false,
-
+                speed: p.speed,
                 autoPlay: p.autoPlay !== undefined ? p.autoPlay : true,
                 autoFitImg: p.autoFitImg !== undefined ? p.autoFitImg : true,
                 reverse: p.reverse !== undefined ? p.reverse : false,
@@ -305,11 +305,11 @@ var bamboo = (function(){
                     clearInterval(this._runAnimation);
                 }
             };
-            slideshow.toNext = function(){
+            slideshow.tonext = function(){
                 // jump to the previous page
                 _this.setFocus(_this.index - 1, 'left-key');
             };
-            slideshow.toPrev = function(){
+            slideshow.toprev = function(){
                 // jump to the next page
                 _this.setFocus(_this.index + 1, 'right-key');
             };
@@ -774,16 +774,15 @@ var bamboo = (function(){
                     return;
                 }
 
-                var current = this.slides[index];
-                var previous = this.slides[this.index];
-                current.style.zIndex = '1';
-                previous.style.zIndex = '0';
-                
                 var temp = this.slideshowElement.querySelector('.tempSlide');
                 if (temp) {
                     clearInterval(this.animation);
                     temp.parentElement.removeChild(temp);
                 }
+
+                var current = this.slides[index];
+                var previous = this.slides[this.index];
+                
                 temp = document.createElement('div');
                 temp.style.zIndex = '2';
                 addClass(temp, 'tempSlide');
@@ -804,8 +803,11 @@ var bamboo = (function(){
                     child.appendChild(previousClone);
                     temp.appendChild(child);
                 }
+                this.slideshowElement.style.display = document.defaultView.getComputedStyle(this.slideshowElement)['display'];
                 this.slideshowElement.appendChild(temp);
-
+                current.style.zIndex = '1';
+                previous.style.zIndex = '0';
+                
                 var i = 0;
                 var _this = this;
                 var squareList = Array.apply(null, { length: temp.children.length }).map(Number.call, Number);

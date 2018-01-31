@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>bamboo demo</title>
+    <link rel="stylesheet" type="text/css" href="css/bamboo.css">
+    <script type="text/javascript" src="js/bamboo.js"></script>
+    <style type="text/css">
+        .demo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            
+            width: 500px;
+            height: 250px;
+            overflow: hidden;
+            border: 10px solid #fefefe;
+            box-shadow: 1px 1px 8px 2px rgba(0, 0, 0, .1);
+        }
+    </style>
+</head>
+<body>
+    <div class="demo">
+        <div class="slides">
+            <div><img src="img/1.jpg"></div>
+            <div><img src="img/2.jpg"></div>
+            <div><img src="img/3.jpg"></div>
+            <div><img src="img/4.jpg"></div>
+            <div><img src="img/5.jpg"></div>
+            <div><img src="img/6.jpg"></div>
+            <div><img src="img/7.jpg"></div>
+        </div> 
+    </div>  
+    <script type="text/javascript">
+        var element = document.querySelector('.demo');
+        var sildeshow = bamboo(element);
+    </script> 
+</body>
+</html>
