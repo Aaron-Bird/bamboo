@@ -2,14 +2,14 @@ var gulp = require('gulp');
 
 // copy
 gulp.task('copy', function(){
-    return gulp.src('src/**/*', {base: 'src'}).pipe(gulp.dest('test'));
+    return gulp.src('src/**/*', {base: 'src'})
+        .pipe(gulp.dest('test'))
+        .pipe(gulp.dest('demo'));
 });
 
 gulp.task('copy:watch', function(done){
-    gulp.watch('src/**/*', gulp.series('copy'));
+    return gulp.watch('src/**/*', gulp.series('copy'));
 });
-
-
 
 var browserSync = require('browser-sync').create();
 gulp.task('browserSync', function(){    

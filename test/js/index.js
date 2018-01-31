@@ -1,3 +1,6 @@
+var ele = document.querySelector('.t-ul');
+var fade = bamboo(ele);
+
 var ele = document.querySelector('.t-style');
 var fade = bamboo(ele, 'fade',{
 
