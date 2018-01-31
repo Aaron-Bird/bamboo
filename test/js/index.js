@@ -1,9 +1,11 @@
 var ele = document.querySelector('.t-ul');
-var fade = bamboo(ele);
+var fade = bamboo(ele,'fade',{
+    hideDot: true,
+    hideArrow: true,
+});
 
 var ele = document.querySelector('.t-style');
 var fade = bamboo(ele, 'fade',{
-
 });
 
 var ele = document.querySelector('.t-style-para');
