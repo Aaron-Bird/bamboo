@@ -10,7 +10,7 @@ bamboo是一个轮播图插件,由JavaScript编写,无需其他第三方库
 ## 示例
 在项目的demo和test文件夹中有很多范例,例如
 
-http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/test/index.html
+http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/test/div.html
 
 ## 载入
 将bamboo.css和bamboo.js在使用前载入
