@@ -143,7 +143,6 @@ var bamboo = (function(){
                 jsAnime: p.jsAnime !== undefined ? p.jsAnime : false,
                 
                 pause: false,
-
                 // toward: p.toward !== undefined ? p.toward : 'horizontal',
             };
 
@@ -281,10 +280,10 @@ var bamboo = (function(){
                     var t = this.width / imgElement.clientWidth;
                     if (imgHeight * t > this.height) {
                         imgElement.style.height = 'auto';
-                        imgElement.style.width = this.width;
+                        imgElement.style.width = this.width + 'px';
                     } else {
                         imgElement.style.width = 'auto';
-                        imgElement.style.height = this.height;
+                        imgElement.style.height = this.height + 'px';
                     }
                 }
             };

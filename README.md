@@ -13,7 +13,7 @@ bamboo是一个轮播图插件,由JavaScript编写,无需其他第三方插件
 http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/test/index.html
 
 ## 载入
-将bamboo.css和bamboo.js在head中载入即可
+将bamboo.css和bamboo.js在使用前载入
 ```HTML
 <head>
   <link rel="stylesheet" type="text/css" href="css/bamboo.css">
@@ -125,7 +125,12 @@ bamboo会自动搜索class名为dots的元素,将其子元素视为导航按钮
     </div>
 </div> 
 ```
-
+你还需要为导航元素添加一个.focus样式,作为获得焦点样式
+```HTML
+<style>
+.dots>i.focus {}
+</style>
+```
 
 bamboo会自动给轮播图容器添加overflow: hidden样式
 

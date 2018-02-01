@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>bamboo demo</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/bamboo.css">
+    <script type="text/javascript" src="js/bamboo.js"></script>
+    <style type="text/css">
+        .demo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            
+            width: 500px;
+            height: 250px;
+            overflow: hidden;
+            border: 10px solid #fefefe;
+            box-shadow: 1px 1px 8px 2px rgba(0, 0, 0, .1);
+        }
+        .ticket {
+            list-style: none;
+            
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            padding-top: 10px;
+            text-align: center;
+            background: #F5D0A2;
+        }
+        .ticket li {
+            display: inline-block;
+            height: 230px;
+            width: 100px;
+            background-color: #FEEACC;
+            margin: 0 5px;
+            border-radius: 8px;
+            text-align: center;
+            line-height: 220px;
+            color: #fff;
+            font-size: 40px;
+            font-family: 'Lato', sans-serif;
+            box-shadow: 0px 0px 6px 2px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="demo">
+        <div class="slides">
+            <div>
+                <ul class="ticket">
+                    <li>A</li>
+                    <li>B</li>
+                    <li>C</li>
+                    <li>D</li>
+                </ul>
+            </div>
+            <div>
+                <ul class="ticket">
+                    <li>E</li>
+                    <li>F</li>
+                    <li>G</li>
+                    <li>H</li>
+                </ul>                
+            </div>
+            <div>
+                <ul class="ticket">
+                    <li>I</li>
+                    <li>J</li>
+                    <li>K</li>
+                    <li>L</li>
+                </ul>                
+            </div>
+        </div> 
+    </div>  
+    <script type="text/javascript">
+        var element = document.querySelector('.demo');
+        var sildeshow = bamboo(element,'roll',{
+            autoPlay: false,
+        });
+    </script> 
+</body>
+</html>
