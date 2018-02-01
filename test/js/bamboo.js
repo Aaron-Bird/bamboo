@@ -28,7 +28,6 @@ var bamboo = (function(){
         }
         return false;
     }
-
     function resizeDetect(element, callback){
         // When the element size changes, call the callback function
         // parameter
