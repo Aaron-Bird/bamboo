@@ -235,7 +235,11 @@ var bamboo = (function(){
                 });
                 // Change the picture size and coordinates to fit the carousel size
                 if (this.autoFitImg) {
-                    slideshow.fitImg();
+                    var imgList = this.slidesElement.querySelectorAll('img');
+                    for (var i = 0; i < imgList.length; i++){
+                        var img = imgList[i];
+                        img.addEventListener('load',this.resizeImg.bind(this,img));
+                    }
                 }
                 
                 if (this.backgroundColor) {
@@ -266,23 +270,26 @@ var bamboo = (function(){
                     slide.style.height = this.height + 'px';
                 }                
             };
+
+            slideshow.resizeImg = function(imgElement) {
+                addClass(imgElement, 'fit-img');
+                var imgHeight = imgElement.clientHeight;
+                var t = this.width / imgElement.clientWidth;
+                if (imgHeight * t > this.height) {
+                    imgElement.style.height = 'auto';
+                    imgElement.style.width = this.width + 'px';
+                } else {
+                    imgElement.style.width = 'auto';
+                    imgElement.style.height = this.height + 'px';
+                }
+            };
+
             slideshow.fitImg = function(){
                 // resize the image to match the slideshow 
                 var imgList = this.slidesElement.querySelectorAll('img');
                 var len = imgList.length;
                 for (var i = 0; i < len; i++) {
-                    var imgElement = imgList[i];
-                    addClass(imgElement, 'fit-img');
-
-                    var imgHeight = imgElement.clientHeight;
-                    var t = this.width / imgElement.clientWidth;
-                    if (imgHeight * t > this.height) {
-                        imgElement.style.height = 'auto';
-                        imgElement.style.width = this.width + 'px';
-                    } else {
-                        imgElement.style.width = 'auto';
-                        imgElement.style.height = this.height + 'px';
-                    }
+                    this.resizeImg(imgList[i]);
                 }
             };
             slideshow.run = function() {

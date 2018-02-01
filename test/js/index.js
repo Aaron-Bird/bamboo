@@ -1,6 +1,8 @@
 // fade
 var ele = document.querySelector('.t-fade');
-var fade = bamboo(ele, 'fade', {});
+var fade = bamboo(ele, 'fade', {
+    autoPlay: false,
+});
 
 var ele = document.querySelector('.t-fade-reverse');
 var fade = bamboo(ele, 'fade', {
