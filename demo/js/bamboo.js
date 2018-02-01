@@ -250,11 +250,10 @@ var bamboo = (function(){
                 if (this.jsAnime) {
                     // Use js to calculate animation transition
                     // Remove the transition property to prevent css animation and js animation conflict
-                    this.slideshowElement.style.transition = 'none';
+                    this.slidesElement.style.transition = 'none';
                     for (var i = 0; i < this.slideList.length; i++) {
                         this.slideList[i].style.transition = 'none';
                     }
-                    // addClass(this.slideshowElement, 'jsAnime');
                 }
             };
             slideshow.resetSlideSize = function() {
