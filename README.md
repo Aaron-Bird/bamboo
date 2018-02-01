@@ -138,7 +138,7 @@ bamboo会自动给轮播图容器添加overflow: hidden样式
 
 [demo](http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/demo/custom-style-2.html)
 ```html
-<div>
+<div class="demo"> 
     <div class="slides">
         <div><img src="img/1.jpg"></div>
         <div><img src="img/2.jpg"></div>
@@ -165,3 +165,7 @@ var fade = bamboo(element,'fade', {
 });
 </script>
 ```
+
+## 注意事项
+- 使用transform3d()移动,
+- ie9不支持使用js计算动画效果
