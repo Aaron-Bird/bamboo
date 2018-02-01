@@ -1,10 +1,10 @@
 # bamboo
 
-bamboo是一个轮播图插件,由JavaScript编写,无需其他第三方插件
+bamboo是一个轮播图插件,由JavaScript编写,无需其他第三方库
 
 ## 特点
 - 兼容ie9及以上浏览器
-- 多种动画效果
+- 多种切换效果
 - 自适应
 
 ## 示例
@@ -21,13 +21,10 @@ http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/t
 </head>
 ```
 ## 使用
-
+[demo](http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/demo/default.html)
 
 创建一个div作为容器,在其中加入一个class名为slides的元素,将图片放在li中  
-
 ```HTML
-<link rel="stylesheet" type="text/css" href="css/bamboo.css">
-<script type="text/javascript" src="js/bamboo.js"></script>
 <div class="demo">
     <ul class="slides">
         <li><img src="img/1.jpg"></li>
@@ -56,6 +53,8 @@ var element = document.querySelector('.demo');
 var fade = bamboo(element);
 </script>
 ```
+不只是图片,还可以将HMTL文档作为轮播内容 
+[demo](http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/demo/default-2.html)
 
 ## 参数
 bamboo(element, animationName, parameters)
@@ -99,6 +98,7 @@ sildeshow.toPrev()
 sildeshow.toNext()
 ```
 ### 自定义样式
+[demo](http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/demo/custom-style.html)
 
 定义一个class名为dots的元素,将导航元素放在其中
 
@@ -125,7 +125,7 @@ bamboo会自动搜索class名为dots的元素,将其子元素视为导航按钮
     </div>
 </div> 
 ```
-你还需要为导航元素添加一个.focus样式,作为获得焦点样式
+还需要为导航元素添加一个.focus样式,作为获得焦点样式
 ```HTML
 <style>
 .dots>i.focus {}
@@ -135,6 +135,8 @@ bamboo会自动搜索class名为dots的元素,将其子元素视为导航按钮
 bamboo会自动给轮播图容器添加overflow: hidden样式
 
 如果想把导航和前/后页切换按钮放在轮播图外,需在调用bamboo时将其作为参数传入
+
+[demo](http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/demo/custom-style-2.html)
 ```html
 <div>
     <div class="slides">
