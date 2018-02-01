@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>bamboo demo</title>
+    <link rel="stylesheet" type="text/css" href="css/bamboo.css">
+    <script type="text/javascript" src="js/bamboo.js"></script>
+    <style type="text/css">
+    .demo {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        width: 500px;
+        height: 250px;
+        overflow: hidden;
+        border: 10px solid #fefefe;
+        box-shadow: 1px 1px 8px 2px rgba(0, 0, 0, .1);
+    }
+
+    .demo .dots {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 12px;
+    }
+
+    .demo .dots>i {
+        display: block;
+        float: left;
+        width: calc(100% / 7);
+        height: 10px;
+        background: #fff;
+        border-top: 2px solid rgba(0, 0, 0, 0);
+    }
+
+    .demo .dots>i:nth-of-type(1) {
+        background: #FFD64F;
+    }
+
+    .demo .dots>i:nth-of-type(2) {
+        background: #F66064;
+    }
+
+    .demo .dots>i:nth-of-type(3) {
+        background: #7C3C83;
+    }
+
+    .demo .dots>i:nth-of-type(4) {
+        background: #D65671;
+    }
+
+    .demo .dots>i:nth-of-type(5) {
+        background: #EE9175;
+    }
+
+    .demo .dots>i:nth-of-type(6) {
+        background: #6796D7;
+    }
+
+    .demo .dots>i:nth-of-type(7) {
+        background: #F7EDF3;
+    }
+
+    .demo .dots>i.focus {
+        border-top: 2px solid #fff;
+    }
+
+    .demo .next,
+    .demo .prev {
+        position: absolute;
+        width: 0;
+        height: 0;
+        display: block;
+        bottom: 20px;
+    }
+
+    .demo .prev:hover,
+    .demo .next:hover {
+        opacity: 0.6;
+    }
+
+    .demo .prev {
+        left: 20px;
+        border-top: 8px solid transparent;
+        border-right: 12px solid #F7EDF3;
+        border-bottom: 8px solid transparent;
+    }
+
+    .demo .next {
+        left: 35px;
+        border-top: 8px solid transparent;
+        border-left: 12px solid #F7EDF3;
+        border-bottom: 8px solid transparent;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="demo">
+        <div class="slides">
+            <div><img src="img/1.jpg"></div>
+            <div><img src="img/2.jpg"></div>
+            <div><img src="img/3.jpg"></div>
+            <div><img src="img/4.jpg"></div>
+            <div><img src="img/5.jpg"></div>
+            <div><img src="img/6.jpg"></div>
+            <div><img src="img/7.jpg"></div>
+        </div>
+        <div class="dots">
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+        </div>
+        <div class="arrow">
+            <i class="prev"></i>
+            <i class="next"></i>
+        </div>
+    </div>
+    <script type="text/javascript">
+    var element = document.querySelector('.demo');
+    var sildeshow = bamboo(element);
+    </script>
+</body>
+
+</html>
