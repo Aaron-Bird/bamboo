@@ -6,7 +6,7 @@ var bamboo = (function(){
     }
 
     function addClass(element, className) {
-        if (!isIe9()) {
+        if ('classList' in document.documentElement) {
             element.classList.add(className);
         } else if (!hasClass(element, className)) {
             element.className += ' ' + className;
@@ -14,7 +14,7 @@ var bamboo = (function(){
     }
 
     function removeClass(element, className) {
-        if (!isIe9()) {
+        if ('classList' in document.documentElement) {
             element.classList.remove(className);
         } else if (hasClass(element, className)) {
             var regExp = new RegExp(className +'(\\s|$)');
@@ -22,8 +22,8 @@ var bamboo = (function(){
         }
     }
 
-    function isIe9() {
-        if (navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion.match(/9./i) == "9.") {
+    function supportTransition() {
+        if ('transition' in document.documentElement.style) {
             return true;
         }
         return false;
@@ -316,7 +316,7 @@ var bamboo = (function(){
             };
             slideshow.setFocus = function(index, whoTrigger) {
                 // jump to the page by index
-                if (this.jsAnime || isIe9()) {
+                if (this.jsAnime || !supportTransition()) {
                     slideshow.focusByJs(index, whoTrigger);
                 } else {
                     slideshow.focusByCss(index, whoTrigger);
@@ -366,14 +366,14 @@ var bamboo = (function(){
                 var style = this.slidesElement.style;
                 if (this.vertical) {
                     // scroll vertically
-                    if (this.jsAnime || isIe9()) {
+                    if (this.jsAnime || !supportTransition()) {
                         style.marginTop = distance + 'px';
                     } else {
                         style.transform = 'translate3d( 0px, ' + distance + 'px, 0px)';
                     }
                 } else {
                     // scroll horizontally
-                    if (this.jsAnime || isIe9()) {
+                    if (this.jsAnime || !supportTransition()) {
                         style.marginLeft = distance + 'px';
                     } else {
                         style.transform = 'translate3d(' + distance + 'px, 0px, 0px)';
