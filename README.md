@@ -165,7 +165,3 @@ var fade = bamboo(element,'fade', {
 });
 </script>
 ```
-
-## 注意事项
-- 使用transform3d()移动,
-- ie9不支持使用js计算动画效果
