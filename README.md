@@ -86,7 +86,7 @@ bamboo()会返回一个bamboo对象,有以下方法
 - stop() 暂停播放
 - toNext() 转到上一页
 - toPrev() 转到下一页
-例
+
 ```javascript
 var element = document.querySelector('.demo');
 var sildeshow = bamboo(element);

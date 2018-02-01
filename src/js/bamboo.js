@@ -9,7 +9,6 @@ var bamboo = (function(){
         if (!isIe9()) {
             element.classList.add(className);
         } else if (!hasClass(element, className)) {
-            alert(' ');
             element.className += ' ' + className;
         }
     }
