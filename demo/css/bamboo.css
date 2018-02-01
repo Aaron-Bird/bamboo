@@ -9,7 +9,8 @@
     position: relative;
     z-index: 0;  
     margin: 0;
-    padding: 0;  list-style: none;
+    padding: 0;  
+    list-style: none;
 }
 
 .bamboo>.slides>.slide {

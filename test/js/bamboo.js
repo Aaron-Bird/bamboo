@@ -9,7 +9,6 @@ var bamboo = (function(){
         if (!isIe9()) {
             element.classList.add(className);
         } else if (!hasClass(element, className)) {
-            alert(' ');
             element.className += ' ' + className;
         }
     }
@@ -143,7 +142,6 @@ var bamboo = (function(){
                 jsAnime: p.jsAnime !== undefined ? p.jsAnime : false,
                 
                 pause: false,
-
                 // toward: p.toward !== undefined ? p.toward : 'horizontal',
             };
 
