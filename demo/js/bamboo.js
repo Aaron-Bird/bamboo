@@ -238,6 +238,7 @@ var bamboo = (function(){
                     var imgList = this.slidesElement.querySelectorAll('img');
                     for (var i = 0; i < imgList.length; i++){
                         var img = imgList[i];
+                        this.resizeImg(img);
                         img.addEventListener('load',this.resizeImg.bind(this,img));
                     }
                 }
