@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <link rel="stylesheet" type="text/css" href="css/bamboo.min.css">
+    <script type="text/javascript" src="js/bamboo.min.js"></script>
+    <style type="text/css">
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background: #fefeff;
+    }
+
+    h3 {
+        margin: 10px;
+        text-align: center;
+        font-weight: 400;
+        color: #334;
+    }
+
+    .demo {
+        position: relative;
+        overflow: hidden;
+        margin: 0 auto;
+        margin-bottom: 10px;
+        width: 500px;
+        height: 270px;
+        border: 10px solid #fefefe;
+        box-shadow: 1px 1px 8px 2px rgba(0, 0, 0, .1);
+    }
+
+    .yellow>* {
+        background: #ff0;
+    }
+
+    .red>* {
+        background: #aa0000;
+    }
+
+    .blue>* {
+        background: #00f;
+    }
+
+    img {
+        width: 100%;
+    }
+
+    .t-style .dots {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .t-style .dots>i {
+        display: block;
+        float: left;
+        width: calc(100% / 7);
+        height: 10px;
+        background: #fff;
+    }
+
+    .t-style .dots>i:nth-of-type(1) {
+        background: #FFD64F;
+    }
+
+    .t-style .dots>i:nth-of-type(2) {
+        background: #F66064;
+    }
+
+    .t-style .dots>i:nth-of-type(3) {
+        background: #7C3C83;
+    }
+
+    .t-style .dots>i:nth-of-type(4) {
+        background: #D65671;
+    }
+
+    .t-style .dots>i:nth-of-type(5) {
+        background: #EE9175;
+    }
+
+    .t-style .dots>i:nth-of-type(6) {
+        background: #6796D7;
+    }
+
+    .t-style .dots>i:nth-of-type(7) {
+        background: #F7EDF3;
+    }
+
+    .t-style .dots>i.focus {
+        border-bottom: 2px solid #fff;
+    }
+
+    .t-style .next,
+    .t-style .prev {
+        position: absolute;
+        display: block;
+        width: 0;
+        height: 0;       
+        bottom: 20px;
+    }
+
+    .t-style .prev:hover,
+    .t-style .next:hover {
+        opacity: 0.6;
+    }
+
+    .t-style .prev {
+        left: 20px;
+        border-top: 8px solid transparent;
+        border-right: 12px solid #F7EDF3;
+        border-bottom: 8px solid transparent;
+    }
+
+    .t-style .next {
+        left: 35px;
+        border-top: 8px solid transparent;
+        border-left: 12px solid #F7EDF3;
+        border-bottom: 8px solid transparent;
+    }
+
+    .m-nav {
+        text-align: center;
+    }
+
+    .m-nav>i {
+        display: inline-block;
+        margin: 4px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: 1px solid #aaa;
+    }
+
+    .m-nav>i.focus {
+        background: #ff0;
+    }
+
+    .m-arrow {
+        text-align: center;
+    }
+
+    .m-arrow>button {
+        width: 100px;
+        height: 35px;
+        outline: 0;
+        border: 0;
+        background: #479FA4;
+        color: #fff;
+        font-size: 14px;
+        border-radius: 4px;
+        border-top: 2px solid #76C3C1;
+        border-bottom: 2px solid #404E4F;
+        margin: 2px;
+    }
+
+    .m-arrow>button:hover {
+        background: #378F94;
+    }
+    </style>
+
+    <body>
+        <div class="">
+            <h3>fade</h3>
+            <div class="t-fade demo">
+                <div class="slides">
+                    <div><img src="img/1.jpg"></div>
+                    <div><img src="img/2.jpg"></div>
+                    <div><img src="img/3.jpg"></div>
+                    <div><img src="img/4.jpg"></div>
+                    <div><img src="img/5.jpg"></div>
+                    <div><img src="img/6.jpg"></div>
+                    <div><img src="img/7.jpg"></div>
+                </div>
+            </div>
+            <h3>fade reverse</h3>
+            <div class="t-fade-reverse demo">
+                <div class="slides">
+                    <div><img src="img/1.jpg"></div>
+                    <div><img src="img/2.jpg"></div>
+                    <div><img src="img/3.jpg"></div>
+                    <div><img src="img/4.jpg"></div>
+                    <div><img src="img/5.jpg"></div>
+                    <div><img src="img/6.jpg"></div>
+                    <div><img src="img/7.jpg"></div>
+                </div>
+            </div>
+            <h3>fade js</h3>
+            <div class="t-fade-js demo">
+                <div class="slides">
+                    <div><img src="img/1.jpg"></div>
+                    <div><img src="img/2.jpg"></div>
+                    <div><img src="img/3.jpg"></div>
+                    <div><img src="img/4.jpg"></div>
+                    <div><img src="img/5.jpg"></div>
+                    <div><img src="img/6.jpg"></div>
+                    <div><img src="img/7.jpg"></div>
+                </div>
+            </div>
+        </div>
+        <div class="">
+            <h3>roll</h3>
+            <div class="t-roll demo">
+                <div class="slides">
+                    <div><img src="img/1.jpg"></div>
+                    <div><img src="img/2.jpg"></div>
+                    <div><img src="img/3.jpg"></div>
+                    <div><img src="img/4.jpg"></div>
+                    <div><img src="img/5.jpg"></div>
+                    <div><img src="img/6.jpg"></div>
+                    <div><img src="img/7.jpg"></div>
+                </div>
+            </div>
+            <h3>roll reverse</h3>
+            <div class="t-roll-reverse demo">
+                <div class="slides">
+                    <div><img src="img/1.jpg"></div>
+                    <div><img src="img/2.jpg"></div>
+                    <div><img src="img/3.jpg"></div>
+                    <div><img src="img/4.jpg"></div>
+                    <div><img src="img/5.jpg"></div>
+                    <div><img src="img/6.jpg"></div>
+                    <div><img src="img/7.jpg"></div>
+                </div>
+            </div>
+            <h3>roll js</h3>
+            <div class="t-roll-js demo">
+                <div class="slides">
+                    <div><img src="img/1.jpg"></div>
+                    <div><img src="img/2.jpg"></div>
+                    <div><img src="img/3.jpg"></div>
+                    <div><img src="img/4.jpg"></div>
+                    <div><img src="img/5.jpg"></div>
+                    <div><img src="img/6.jpg"></div>
+                    <div><img src="img/7.jpg"></div>
+                </div>
+            </div>
+            <h3>roll vertical</h3>
+            <div class="t-roll-vertical demo">
+                <div class="slides">
+                    <div><img src="img/1.jpg"></div>
+                    <div><img src="img/2.jpg"></div>
+                    <div><img src="img/3.jpg"></div>
+                    <div><img src="img/4.jpg"></div>
+                    <div><img src="img/5.jpg"></div>
+                    <div><img src="img/6.jpg"></div>
+                    <div><img src="img/7.jpg"></div>
+                </div>
+            </div>
+            <h3>roll js vertical</h3>
+            <div class="t-roll-js-vertical demo">
+                <div class="slides">
+                    <div><img src="img/1.jpg"></div>
+                    <div><img src="img/2.jpg"></div>
+                    <div><img src="img/3.jpg"></div>
+                    <div><img src="img/4.jpg"></div>
+                    <div><img src="img/5.jpg"></div>
+                    <div><img src="img/6.jpg"></div>
+                    <div><img src="img/7.jpg"></div>
+                </div>
+            </div>
+        </div>
+        <div class="">
+            <h3>into</h3>
+            <div class="t-into demo">
+                <div class="slides">
+                    <div><img src="img/1.jpg"></div>
+                    <div><img src="img/2.jpg"></div>
+                    <div><img src="img/3.jpg"></div>
+                    <div><img src="img/4.jpg"></div>
+                    <div><img src="img/5.jpg"></div>
+                    <div><img src="img/6.jpg"></div>
+                    <div><img src="img/7.jpg"></div>
+                </div>
+            </div>
+            <h3>into reverse</h3>
+            <div class="t-into-reverse demo">
+                <div class="slides">
+                    <div><img src="img/1.jpg"></div>
+                    <div><img src="img/2.jpg"></div>
+                    <div><img src="img/3.jpg"></div>
+                    <div><img src="img/4.jpg"></div>
+                    <div><img src="img/5.jpg"></div>
+                    <div><img src="img/6.jpg"></div>
+                    <div><img src="img/7.jpg"></div>
+                </div>
+            </div>
+            <h3>into js</h3>
+            <div class="t-into-js demo">
+                <div class="slides">
+                    <div><img src="img/1.jpg"></div>
+                    <div><img src="img/2.jpg"></div>
+                    <div><img src="img/3.jpg"></div>
+                    <div><img src="img/4.jpg"></div>
+                    <div><img src="img/5.jpg"></div>
+                    <div><img src="img/6.jpg"></div>
+                    <div><img src="img/7.jpg"></div>
+                </div>
+            </div>
+        </div>
+        <div class="">
+            <h3>blinds</h3>
+            <div class="t-blinds demo">
+                <div class="slides">
+                    <div><img src="img/1.jpg"></div>
+                    <div><img src="img/2.jpg"></div>
+                    <div><img src="img/3.jpg"></div>
+                    <div><img src="img/4.jpg"></div>
+                    <div><img src="img/5.jpg"></div>
+                    <div><img src="img/6.jpg"></div>
+                    <div><img src="img/7.jpg"></div>
+                </div>
+            </div>
+            <h3>blinds reverse</h3>
+            <div class="t-blinds-reverse demo">
+                <div class="slides">
+                    <div><img src="img/1.jpg"></div>
+                    <div><img src="img/2.jpg"></div>
+                    <div><img src="img/3.jpg"></div>
+                    <div><img src="img/4.jpg"></div>
+                    <div><img src="img/5.jpg"></div>
+                    <div><img src="img/6.jpg"></div>
+                    <div><img src="img/7.jpg"></div>
+                </div>
+            </div>
+            <h3>blinds js</h3>
+            <div class="t-blinds-js demo">
+                <div class="slides">
+                    <div><img src="img/1.jpg"></div>
+                    <div><img src="img/2.jpg"></div>
+                    <div><img src="img/3.jpg"></div>
+                    <div><img src="img/4.jpg"></div>
+                    <div><img src="img/5.jpg"></div>
+                    <div><img src="img/6.jpg"></div>
+                    <div><img src="img/7.jpg"></div>
+                </div>
+            </div>
+        </div>
+        <div class="">
+            <h3>square</h3>
+            <div class="t-square demo">
+                <div class="slides">
+                    <div><img src="img/1.jpg"></div>
+                    <div><img src="img/2.jpg"></div>
+                    <div><img src="img/3.jpg"></div>
+                    <div><img src="img/4.jpg"></div>
+                    <div><img src="img/5.jpg"></div>
+                    <div><img src="img/6.jpg"></div>
+                    <div><img src="img/7.jpg"></div>
+                </div>
+            </div>
+            <h3>square reverse</h3>
+            <div class="t-square-reverse demo">
+                <div class="slides">
+                    <div><img src="img/1.jpg"></div>
+                    <div><img src="img/2.jpg"></div>
+                    <div><img src="img/3.jpg"></div>
+                    <div><img src="img/4.jpg"></div>
+                    <div><img src="img/5.jpg"></div>
+                    <div><img src="img/6.jpg"></div>
+                    <div><img src="img/7.jpg"></div>
+                </div>
+            </div>
+            <h3>square js</h3>
+            <div class="t-square-js demo">
+                <div class="slides">
+                    <div><img src="img/1.jpg"></div>
+                    <div><img src="img/2.jpg"></div>
+                    <div><img src="img/3.jpg"></div>
+                    <div><img src="img/4.jpg"></div>
+                    <div><img src="img/5.jpg"></div>
+                    <div><img src="img/6.jpg"></div>
+                    <div><img src="img/7.jpg"></div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h3>custom 1</h3>
+            <div class="t-style demo">
+                <div class="slides">
+                    <div><img src="img/1.jpg"></div>
+                    <div><img src="img/2.jpg"></div>
+                    <div><img src="img/3.jpg"></div>
+                    <div><img src="img/4.jpg"></div>
+                    <div><img src="img/5.jpg"></div>
+                    <div><img src="img/6.jpg"></div>
+                    <div><img src="img/7.jpg"></div>
+                </div>
+                <div class="dots">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </div>
+                <div class="arrow">
+                    <i class="prev"></i>
+                    <i class="next"></i>
+                </div>
+            </div>
+            <h3>custom 2</h3>
+            <div class="t-style-para demo">
+                <div class="slides">
+                    <div><img src="img/1.jpg"></div>
+                    <div><img src="img/2.jpg"></div>
+                    <div><img src="img/3.jpg"></div>
+                    <div><img src="img/4.jpg"></div>
+                    <div><img src="img/5.jpg"></div>
+                    <div><img src="img/6.jpg"></div>
+                    <div><img src="img/7.jpg"></div>
+                </div>
+            </div>
+            <div>
+                <div class="m-nav">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </div>
+                <div class="m-arrow">
+                    <button class="m-prev">1</button>
+                    <button class="m-next">2</button>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="js/index.js"></script>
+    </body>
+
+</html>

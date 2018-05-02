@@ -1,10 +1,16 @@
 var gulp = require('gulp');
 
 // copy
-gulp.task('copy', function(){
-    return gulp.src('src/**/*', {base: 'src'})
-        .pipe(gulp.dest('test'))
-        .pipe(gulp.dest('demo'));
+gulp.task('copy', function(done){
+    gulp.src('source/**/*.js',{base: 'source'})
+        .pipe(gulp.dest('test/js'))
+        .pipe(gulp.dest('demo/js'));
+
+    gulp.src('source/**/*.css',{base: 'source'})
+        .pipe(gulp.dest('test/css'))
+        .pipe(gulp.dest('demo/css'));
+        
+    return done();
 });
 
 gulp.task('copy:watch', function(done){
