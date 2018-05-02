@@ -10,11 +10,12 @@ bamboo是一个轮播图插件,由JavaScript编写,无需其他第三方库
 
 ## 示例
 可以在demo和test文件夹下找到大量示例  
-[./demo](demo)  
-[./test](test)  
+[./demo](/demo)  
+[./test](/test)  
 
 ## 使用
-[demo](http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/demo/default.html)
+
+[./demo/default.html](/demo/default.html) [preview](http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/demo/default.html)  
 
 载入bamboo.css和bamboo.js
 ```HTML
@@ -55,7 +56,7 @@ var fade = bamboo(element);
 ```
 
 还可以使其他元素作为轮播图内容   
-[./demo/default-2.html](demo/default-2.html)  [demo](http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/demo/default-2.html)
+[./demo/default-2.html](/demo/default-2.html)  [demo](http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/demo/default-2.html)
 
 ## 参数
 bamboo(element, animationName, parameters)
@@ -104,7 +105,7 @@ sildeshow.toNext()
 sildeshow.run()
 ```
 ## 自定义样式
-[demo/custom-style.html](demo/custom-style.html) [preview](http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/demo/custom-style.html)  
+[demo/custom-style.html](/demo/custom-style.html) [preview](http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/demo/custom-style.html)  
 
 定义一个class名为dots的元素,将导航元素放在其中  
 其他特殊class名还有prev和next,分别表示前/后页按钮  
@@ -135,9 +136,9 @@ sildeshow.run()
 </style>
 ```
 
-bamboo会自动给轮播图容器添加overflow: hidden样式
+bamboo会自动给轮播图容器添加"overflow: hidden"样式
 如果想把导航和前/后页切换按钮放在轮播图外,需在调用bamboo时将其作为参数传入
-[demo/custom-style-2.html](demo/custom-style-2.html) [preview](http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/demo/custom-style-2.html)
+[demo/custom-style-2.html](/demo/custom-style-2.html) [preview](http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/demo/custom-style-2.html)
 ```html
 <div class="demo"> 
     <div class="slides">

@@ -2,7 +2,7 @@
 A carousel widget. Written in JavaScript without third-party libraries. 
 [demo](http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/test/div-response.html)  
 
-[中文文档](docs/DEADME.md)  
+[中文文档](docs/README-zh-CN.md)  
 ## Features
 - Compatible with ie9 and above browsers
 - Multiple animations
@@ -12,12 +12,12 @@ A carousel widget. Written in JavaScript without third-party libraries.
 
 ## Example
 A lot of examples can be found under the demo and test folders  
-[./demo](demo)  
-[./test](test)  
+[./demo](/demo)  
+[./test](/test)  
 
 ## How to use
 
-[example](http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/demo/default.html)
+[./demo/default.html](/demo/default.html) [preview](http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/demo/default.html)  
 
 Loading scripts and css styles
 ```HTML
@@ -61,7 +61,7 @@ var fade = bamboo(element);
 </script>
 ```
 You can also make other elements as carousel content  
-[./demo/default-2.html](demo/default-2.html)  [demo](http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/demo/default-2.html)
+[./demo/default-2.html](/demo/default-2.html)  [demo](http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/demo/default-2.html)
 
 ## parameter
 bamboo(element, animationName, parameters)  
@@ -120,7 +120,7 @@ sildeshow.run()
 Defining an element whose class is "dots" and placing navigation elements in it  
 Other special class names are "prev" and "next", which represent the previous/next buttons
 
-[demo/custom-style.html](demo/custom-style.html) [preview](http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/demo/custom-style.html)  
+[demo/custom-style.html](/demo/custom-style.html) [preview](http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/demo/custom-style.html)  
 
 ```html
 <div>
@@ -152,7 +152,7 @@ You also need to add the ".focus" style as the focus style
 ```
 
 If want to put the dots/next/prev button outside the carousel, you need to pass it as a parameter(Because container will automatically add "oveflow: hidden" style)  
-[demo/custom-style-2.html](demo/custom-style-2.html) [preview](http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/demo/custom-style-2.html)
+[demo/custom-style-2.html](/demo/custom-style-2.html) [preview](http://htmlpreview.github.io/?https://github.com/Aaron-Bird/bamboo/blob/master/demo/custom-style-2.html)
 ```html
 <div class="demo"> 
     <div class="slides">
