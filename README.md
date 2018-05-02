@@ -22,8 +22,8 @@ A lot of examples can be found under the demo and test folders
 Loading scripts and css styles
 ```HTML
 <head>
-  <link rel="stylesheet" type="text/css" href="css/bamboo.css">
-  <script type="text/javascript" src="js/bamboo.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/bamboo.css">
+    <script type="text/javascript" src="js/bamboo.js"></script>
 </head>
 ```
 Use the "div" element as the container, add "ul" of "class=slides" and place the image in the "li" element
@@ -40,8 +40,8 @@ Use the "div" element as the container, add "ul" of "class=slides" and place the
 Call bamboo with "div" as a parameter
 ```HTML
 <script>
-var element = document.querySelector('.demo');
-var fade = bamboo(element, 'fade');
+    var element = document.querySelector('.demo');
+    var fade = bamboo(element, 'fade');
 </script>
 ```
 
@@ -56,8 +56,8 @@ You can also use "div" to wrap pictures
     </div> 
 </div>  
 <script>
-var element = document.querySelector('.demo');
-var fade = bamboo(element);
+    var element = document.querySelector('.demo');
+    var fade = bamboo(element);
 </script>
 ```
 You can also make other elements as carousel content  
@@ -145,9 +145,9 @@ Other special class names are "prev" and "next", which represent the previous/ne
 You also need to add the ".focus" style as the focus style  
 ```HTML
 <style>
-.dots>i.focus {
-    background-color: #ff0;
-}
+    .dots>i.focus {
+        background-color: #ff0;
+    }
 </style>
 ```
 
@@ -173,11 +173,11 @@ If want to put the dots/next/prev button outside the carousel, you need to pass 
     <i class="my-next"></i>
 </div>
 <script>
-var element = document.querySelector('.demo');
-var fade = bamboo(element,'fade', {
-  dots: document.querySelector('my-dots');
-  prev: document.querySelector('my-prev');
-  next: document.querySelector('my-next');
-});
+    var element = document.querySelector('.demo');
+    var fade = bamboo(element,'fade', {
+        dots: document.querySelector('my-dots');
+        prev: document.querySelector('my-prev');
+        next: document.querySelector('my-next');
+    });
 </script>
 ```

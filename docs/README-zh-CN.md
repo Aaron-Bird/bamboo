@@ -20,8 +20,8 @@ bamboo是一个轮播图插件,由JavaScript编写,无需其他第三方库
 载入bamboo.css和bamboo.js
 ```HTML
 <head>
-  <link rel="stylesheet" type="text/css" href="css/bamboo.css">
-  <script type="text/javascript" src="js/bamboo.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/bamboo.css">
+    <script type="text/javascript" src="js/bamboo.js"></script>
 </head>
 ```
 创建一个div作为容器,在其中加入一个class名为slides的元素,将图片放在li中  
@@ -35,8 +35,8 @@ bamboo是一个轮播图插件,由JavaScript编写,无需其他第三方库
     </ul> 
 </div>  
 <script>
-var element = document.querySelector('.demo');
-var fade = bamboo(element);
+    var element = document.querySelector('.demo');
+    var fade = bamboo(element);
 </script>
 ```
 也可以使用div包裹图片
@@ -50,8 +50,8 @@ var fade = bamboo(element);
     </div> 
 </div>  
 <script>
-var element = document.querySelector('.demo');
-var fade = bamboo(element);
+    var element = document.querySelector('.demo');
+    var fade = bamboo(element);
 </script>
 ```
 
@@ -92,7 +92,7 @@ var sildeshow = bamboo(element, 'fade', {
 });
 ```
 ## 方法
-bamboo()会返回一个bamboo对象,有以下方法
+调用bamboo会返回一个对象,可使用下列方法  
 - run() 开始播放
 - stop() 暂停播放
 - toNext() 转到下一页
@@ -132,7 +132,9 @@ sildeshow.run()
 还需要为导航元素添加一个.focus样式,作为获得焦点样式
 ```HTML
 <style>
-.dots>i.focus {}
+    .dots>i.focus {
+        background-color: #ff0;
+    }
 </style>
 ```
 
@@ -159,11 +161,11 @@ bamboo会自动给轮播图容器添加"overflow: hidden"样式
     <i class="my-next"></i>
 </div>
 <script>
-var element = document.querySelector('.demo');
-var fade = bamboo(element,'fade', {
-  dots: document.querySelector('my-dots');
-  prev: document.querySelector('my-prev');
-  next: document.querySelector('my-next');
-});
+    var element = document.querySelector('.demo');
+    var fade = bamboo(element,'fade', {
+        dots: document.querySelector('my-dots');
+        prev: document.querySelector('my-prev');
+        next: document.querySelector('my-next');
+    });
 </script>
 ```
